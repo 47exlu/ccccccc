@@ -1,0 +1,77 @@
+[vite] connecting...
+[vite] connected.
+[vite] hot updated: /src/App.tsx?v=a5ArB4-LhmuMbwhHgNV2U
+[vite] hot updated: /src/index.css?v=a5ArB4-LhmuMbwhHgNV2U
+[vite] hot updated: /src/App.tsx?v=a5ArB4-LhmuMbwhHgNV2U
+[vite] hot updated: /src/index.css?v=a5ArB4-LhmuMbwhHgNV2U
+[vite] hot updated: /src/App.tsx?v=a5ArB4-LhmuMbwhHgNV2U
+[vite] hot updated: /src/index.css?v=a5ArB4-LhmuMbwhHgNV2U
+[vite] hot updated: /src/pages/subscription-success.tsx
+[vite] hot updated: /src/components/game/MainMenu.tsx
+[vite] hot updated: /src/components/game/ArtistCustomization.tsx
+[vite] hot updated: /src/components/game/MusicProduction.tsx
+[vite] hot updated: /src/components/game/SaveLoadGame.tsx
+[vite] hot updated: /src/components/game/SocialMediaView.tsx
+[vite] hot updated: /src/components/game/PremiumStore.tsx
+[vite] hot updated: /src/components/game/BeefSystem.tsx
+[vite] hot updated: /src/components/game/UnreleasedSongs.tsx
+[vite] hot updated: /src/components/game/MusicVideos.tsx
+[vite] hot updated: /src/components/game/SkillsTraining.tsx
+[vite] hot updated: /src/components/game/TouringConcerts.tsx
+[vite] hot updated: /src/components/game/Collaborations.tsx
+[vite] hot updated: /src/components/game/CareerDashboard.tsx
+[vite] hot updated: /src/components/game/SongPromotion.tsx
+[vite] hot updated: /src/components/game/HypeAndControversyTester.tsx
+[vite] hot updated: /src/components/game/AlbumManagement.tsx
+[vite] hot updated: /src/components/game/StreamingImpactDashboard.tsx
+[vite] hot updated: /src/components/game/MusicCharts.tsx
+[vite] hot updated: /src/components/game/StreamingPlatforms.tsx
+[vite] hot updated: /src/components/game/RandomEvents.tsx
+[vite] hot updated: /src/components/game/MerchandiseManagement.tsx
+[vite] hot updated: /src/components/game/MerchandiseSalesCharts.tsx
+[vite] hot updated: /src/App.tsx?v=a5ArB4-LhmuMbwhHgNV2U
+[vite] hot updated: /src/index.css?v=a5ArB4-LhmuMbwhHgNV2U
+[vite] hot updated: /src/pages/subscription-success.tsx
+[vite] hot updated: /src/components/game/MainMenu.tsx
+[vite] hot updated: /src/components/game/ArtistCustomization.tsx
+[vite] hot updated: /src/components/game/MusicProduction.tsx
+[vite] hot updated: /src/components/game/SaveLoadGame.tsx
+[vite] hot updated: /src/components/game/SocialMediaView.tsx
+[vite] hot updated: /src/components/game/PremiumStore.tsx
+[vite] hot updated: /src/components/game/BeefSystem.tsx
+[vite] hot updated: /src/components/game/UnreleasedSongs.tsx
+[vite] hot updated: /src/components/game/MusicVideos.tsx
+[vite] hot updated: /src/components/game/SkillsTraining.tsx
+[vite] hot updated: /src/components/game/TouringConcerts.tsx
+[vite] hot updated: /src/components/game/Collaborations.tsx
+[vite] hot updated: /src/components/game/CareerDashboard.tsx
+[vite] hot updated: /src/components/game/SongPromotion.tsx
+[vite] hot updated: /src/components/game/HypeAndControversyTester.tsx
+[vite] hot updated: /src/components/game/AlbumManagement.tsx
+[vite] hot updated: /src/components/game/StreamingImpactDashboard.tsx
+[vite] hot updated: /src/components/game/MusicCharts.tsx
+[vite] hot updated: /src/components/game/StreamingPlatforms.tsx
+[vite] hot updated: /src/components/game/RandomEvents.tsx
+[vite] hot updated: /src/components/game/MerchandiseManagement.tsx
+[vite] hot updated: /src/components/game/MerchandiseSalesCharts.tsx
+Success sound skipped (muted)
+useToast must be used within a ToastProvider
+useToast must be used within a ToastProvider
+The above error occurred in the <MusicCharts> component:
+
+    at MusicCharts (https://7bab7134-4b58-4f43-8052-0cecffe7a11e-00-1axtrx054n3vw.kirk.replit.dev/src/components/game/MusicCharts.tsx?t=1743537989259:159:83)
+    at main
+    at div
+    at GameLayout (https://7bab7134-4b58-4f43-8052-0cecffe7a11e-00-1axtrx054n3vw.kirk.replit.dev/src/components/game/GameLayout.tsx:24:30)
+    at LoadingTransition (https://7bab7134-4b58-4f43-8052-0cecffe7a11e-00-1axtrx054n3vw.kirk.replit.dev/src/components/ui/loading-transition.tsx:21:37)
+    at Route (https://7bab7134-4b58-4f43-8052-0cecffe7a11e-00-1axtrx054n3vw.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=8daee0f9:280:16)
+    at Switch (https://7bab7134-4b58-4f43-8052-0cecffe7a11e-00-1axtrx054n3vw.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=8daee0f9:336:17)
+    at Suspense
+    at ToastProvider (https://7bab7134-4b58-4f43-8052-0cecffe7a11e-00-1axtrx054n3vw.kirk.replit.dev/src/hooks/use-toast.tsx?v=0C0BC3XblRlFNN1ZNKWb2:20:33)
+    at QueryClientProvider (https://7bab7134-4b58-4f43-8052-0cecffe7a11e-00-1axtrx054n3vw.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=8daee0f9:2882:3)
+    at App (https://7bab7134-4b58-4f43-8052-0cecffe7a11e-00-1axtrx054n3vw.kirk.replit.dev/src/App.tsx?t=1743537989259&v=a5ArB4-LhmuMbwhHgNV2U:164:38)
+    at ToastProvider (https://7bab7134-4b58-4f43-8052-0cecffe7a11e-00-1axtrx054n3vw.kirk.replit.dev/src/hooks/use-toast.tsx?v=0C0BC3XblRlFNN1ZNKWb2:20:33)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+useToast must be used within a ToastProvider

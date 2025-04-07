@@ -1,0 +1,20 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="500" height="500" fill="#121212"/>
+  <rect x="50" y="50" width="400" height="400" fill="none" stroke="#ff4081" stroke-width="5" stroke-dasharray="20,10"/>
+  
+  <!-- Grid pattern -->
+  <g stroke="#333" stroke-width="1">
+    <line x1="0" y1="100" x2="500" y2="100" />
+    <line x1="0" y1="200" x2="500" y2="200" />
+    <line x1="0" y1="300" x2="500" y2="300" />
+    <line x1="0" y1="400" x2="500" y2="400" />
+    <line x1="100" y1="0" x2="100" y2="500" />
+    <line x1="200" y1="0" x2="200" y2="500" />
+    <line x1="300" y1="0" x2="300" y2="500" />
+    <line x1="400" y1="0" x2="400" y2="500" />
+  </g>
+  
+  <circle cx="250" cy="250" r="120" fill="#ff4081" fill-opacity="0.7"/>
+  <text x="250" y="240" font-family="Arial" font-size="48" fill="white" text-anchor="middle" dominant-baseline="middle">RETRO</text>
+  <text x="250" y="290" font-family="Arial" font-size="28" fill="white" text-anchor="middle" dominant-baseline="middle">WAVE</text>
+</svg>

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="225" viewBox="0 0 400 225">
+  <!-- 16:9 aspect ratio -->
+  <defs>
+    <linearGradient id="natureGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#134E5E;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#71B280;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="400" height="225" fill="url(#natureGradient)" />
+  
+  <!-- Mountains in background -->
+  <polygon points="0,100 60,40 120,90 180,30 240,70 300,20 360,60 400,40 400,225 0,225" fill="#0f3d49" />
+  <polygon points="0,140 50,100 100,130 150,90 200,120 250,80 300,110 350,70 400,100 400,225 0,225" fill="#0a2b34" />
+  
+  <!-- Sun/moon -->
+  <circle cx="320" cy="50" r="30" fill="#fff9c4" opacity="0.8" />
+  <circle cx="320" cy="50" r="28" fill="#fff176" opacity="0.6" />
+  
+  <!-- Trees -->
+  <rect x="30" y="120" width="10" height="40" fill="#5D4037" />
+  <polygon points="20,120 50,120 35,70" fill="#2E7D32" />
+  <polygon points="23,100 47,100 35,60" fill="#2E7D32" />
+  
+  <rect x="80" y="140" width="8" height="30" fill="#5D4037" />
+  <polygon points="70,140 98,140 84,100" fill="#2E7D32" />
+  <polygon points="74,120 94,120 84,90" fill="#2E7D32" />
+  
+  <rect x="280" y="130" width="12" height="50" fill="#5D4037" />
+  <polygon points="265,130 307,130 286,70" fill="#2E7D32" />
+  <polygon points="270,105 302,105 286,55" fill="#2E7D32" />
+  
+  <rect x="340" y="150" width="10" height="35" fill="#5D4037" />
+  <polygon points="330,150 360,150 345,110" fill="#2E7D32" />
+  <polygon points="335,135 355,135 345,100" fill="#2E7D32" />
+  
+  <!-- Water reflection -->
+  <rect x="0" y="160" width="400" height="65" fill="#0a2b34" opacity="0.7" />
+  <path d="M0,160 C50,165 100,155 150,165 C200,175 250,155 300,165 C350,160 400,170 400,160 L400,225 L0,225 Z" fill="#71B280" opacity="0.3" />
+  
+  <!-- Grass in foreground -->
+  <rect x="0" y="160" width="400" height="8" fill="#1b5e20" />
+  
+  <!-- Video duration -->
+  <rect x="340" y="190" width="50" height="20" fill="black" opacity="0.7" rx="5" />
+  <text x="350" y="205" font-family="Arial" font-size="12" fill="white">3:24</text>
+  
+  <!-- Nature setting indicator -->
+  <rect x="10" y="10" width="75" height="25" fill="#1b5e20" rx="5" opacity="0.9" />
+  <text x="20" y="27" font-family="Arial" font-size="14" font-weight="bold" fill="white">NATURE</text>
+</svg>

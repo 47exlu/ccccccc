@@ -4,6 +4,15 @@ export default {
   darkMode: ["class"],
   content: ["./client/index.html", "./client/src/**/*.{js,jsx,ts,tsx}"],
   theme: {
+    screens: {
+      'xxs': '320px',  // Extra small screens like iPhone SE
+      'xs': '375px',   // Small screens like iPhone X/11/12 mini
+      'sm': '640px',   // Medium screens
+      'md': '768px',   // Tablets
+      'lg': '1024px',  // Laptops
+      'xl': '1280px',  // Desktops
+      '2xl': '1536px', // Large desktops
+    },
     extend: {
       borderRadius: {
         lg: "var(--radius)",

@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="225" viewBox="0 0 400 225">
+  <!-- 16:9 aspect ratio -->
+  <defs>
+    <linearGradient id="stageGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#000000;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#333333;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="400" height="225" fill="url(#stageGradient)" />
+  
+  <!-- Concert stage platform -->
+  <rect x="0" y="125" width="400" height="100" fill="#222222" />
+  
+  <!-- Stage lighting bars -->
+  <rect x="20" y="20" width="360" height="6" fill="#444444" />
+  <rect x="20" y="26" width="4" height="20" fill="#333333" />
+  <rect x="100" y="26" width="4" height="20" fill="#333333" />
+  <rect x="180" y="26" width="4" height="20" fill="#333333" />
+  <rect x="260" y="26" width="4" height="20" fill="#333333" />
+  <rect x="340" y="26" width="4" height="20" fill="#333333" />
+  <rect x="376" y="26" width="4" height="20" fill="#333333" />
+  
+  <!-- Stage lights -->
+  <circle cx="50" cy="23" r="5" fill="#ff0000" />
+  <circle cx="80" cy="23" r="5" fill="#00ff00" />
+  <circle cx="110" cy="23" r="5" fill="#0000ff" />
+  <circle cx="140" cy="23" r="5" fill="#ffff00" />
+  <circle cx="170" cy="23" r="5" fill="#ff00ff" />
+  <circle cx="200" cy="23" r="5" fill="#00ffff" />
+  <circle cx="230" cy="23" r="5" fill="#ff0000" />
+  <circle cx="260" cy="23" r="5" fill="#00ff00" />
+  <circle cx="290" cy="23" r="5" fill="#0000ff" />
+  <circle cx="320" cy="23" r="5" fill="#ffff00" />
+  <circle cx="350" cy="23" r="5" fill="#ff00ff" />
+  
+  <!-- Stage light beams -->
+  <polygon points="50,28 30,125 70,125" fill="#ff0000" opacity="0.1" />
+  <polygon points="110,28 80,125 140,125" fill="#0000ff" opacity="0.1" />
+  <polygon points="170,28 140,125 200,125" fill="#ff00ff" opacity="0.1" />
+  <polygon points="230,28 200,125 260,125" fill="#ff0000" opacity="0.1" />
+  <polygon points="290,28 260,125 320,125" fill="#0000ff" opacity="0.1" />
+  <polygon points="350,28 320,125 380,125" fill="#ff00ff" opacity="0.1" />
+  
+  <!-- Instruments on stage -->
+  <!-- Drum kit -->
+  <circle cx="200" cy="160" r="15" fill="#cccccc" stroke="#999999" stroke-width="2" />
+  <circle cx="170" cy="150" r="8" fill="#cccccc" stroke="#999999" stroke-width="1" />
+  <circle cx="230" cy="150" r="8" fill="#cccccc" stroke="#999999" stroke-width="1" />
+  <circle cx="190" cy="140" r="7" fill="#cccccc" stroke="#999999" stroke-width="1" />
+  <circle cx="210" cy="140" r="7" fill="#cccccc" stroke="#999999" stroke-width="1" />
+  <rect x="195" y="165" width="10" height="25" fill="#999999" />
+  
+  <!-- Guitar amp left -->
+  <rect x="100" y="150" width="30" height="40" fill="#111111" stroke="#333333" stroke-width="2" />
+  <circle cx="115" cy="165" r="7" fill="#222222" />
+  <circle cx="115" cy="165" r="5" fill="#333333" />
+  <rect x="105" y="180" width="20" height="5" fill="#333333" />
+  
+  <!-- Guitar amp right -->
+  <rect x="270" y="150" width="30" height="40" fill="#111111" stroke="#333333" stroke-width="2" />
+  <circle cx="285" cy="165" r="7" fill="#222222" />
+  <circle cx="285" cy="165" r="5" fill="#333333" />
+  <rect x="275" y="180" width="20" height="5" fill="#333333" />
+  
+  <!-- Microphone stand -->
+  <rect x="199" y="90" width="2" height="35" fill="#999999" />
+  <circle cx="200" cy="85" r="4" fill="#666666" />
+  
+  <!-- Bass guitar silhouette -->
+  <rect x="275" y="100" width="4" height="50" fill="#666666" />
+  <path d="M270,100 Q275,90 280,100" fill="none" stroke="#666666" stroke-width="2" />
+  <ellipse cx="277" cy="140" rx="8" ry="12" fill="#666666" />
+  
+  <!-- Electric guitar silhouette -->
+  <rect x="125" y="100" width="4" height="50" fill="#666666" />
+  <path d="M120,100 Q125,90 130,100" fill="none" stroke="#666666" stroke-width="2" />
+  <path d="M120,140 L135,140 L130,155 L125,155 Z" fill="#666666" />
+  
+  <!-- Performer silhouettes -->
+  <circle cx="200" cy="75" r="10" fill="#000000" />
+  <rect x="195" y="85" width="10" height="25" fill="#000000" />
+  <rect x="190" y="95" width="20" height="10" fill="#000000" />
+  
+  <circle cx="125" cy="85" r="8" fill="#000000" />
+  <rect x="122" y="93" width="6" height="20" fill="#000000" />
+  
+  <circle cx="275" cy="85" r="8" fill="#000000" />
+  <rect x="272" y="93" width="6" height="20" fill="#000000" />
+  
+  <!-- Smoke/fog effect -->
+  <rect x="0" y="125" width="400" height="15" fill="white" opacity="0.1" />
+  
+  <!-- Video duration -->
+  <rect x="340" y="190" width="50" height="20" fill="black" opacity="0.7" rx="5" />
+  <text x="350" y="205" font-family="Arial" font-size="12" fill="white">5:16</text>
+  
+  <!-- Stage setting indicator -->
+  <rect x="10" y="10" width="70" height="25" fill="#ff4400" rx="5" opacity="0.9" />
+  <text x="20" y="27" font-family="Arial" font-size="14" font-weight="bold" fill="white">STAGE</text>
+</svg>

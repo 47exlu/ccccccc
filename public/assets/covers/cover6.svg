@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
+  <rect width="400" height="400" fill="#FC466B" />
+  <rect x="0" y="200" width="400" height="200" fill="#3F5EFB" />
+  <circle cx="200" cy="200" r="120" fill="white" opacity="0.3" />
+  <circle cx="200" cy="200" r="80" fill="white" opacity="0.2" />
+  <circle cx="200" cy="200" r="40" fill="white" opacity="0.4" />
+  <text x="130" y="330" font-family="Arial" font-size="24" font-weight="bold" fill="white">SUMMER HITS</text>
+</svg>

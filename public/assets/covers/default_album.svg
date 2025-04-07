@@ -1,0 +1,5 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="500" height="500" fill="#1a1a1a"/>
+  <text x="250" y="250" font-family="Arial" font-size="48" fill="white" text-anchor="middle" dominant-baseline="middle">DEFAULT ALBUM</text>
+  <text x="250" y="320" font-family="Arial" font-size="24" fill="#999" text-anchor="middle" dominant-baseline="middle">Click to select cover art</text>
+</svg>

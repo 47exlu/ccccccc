@@ -1,0 +1,33 @@
+Warning: Updating a style property during rerender (background) when a conflicting property is set (backgroundSize) can lead to styling bugs. To avoid this, don&#x27;t mix shorthand and non-shorthand properties for the same value; instead, replace the shorthand with separate values.
+    at div
+    at div
+    at div
+    at div
+    at _c9 (https://3b420eaa-247c-4278-abfa-4521d85adf39-00-2dd8pgkb44p9r.worf.replit.dev/src/components/ui/card.tsx:103:12)
+    at div
+    at div
+    at _c (https://3b420eaa-247c-4278-abfa-4521d85adf39-00-2dd8pgkb44p9r.worf.replit.dev/src/components/ui/card.tsx:20:11)
+    at div
+    at div
+    at https://3b420eaa-247c-4278-abfa-4521d85adf39-00-2dd8pgkb44p9r.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-B3QJX4JT.js?v=b0b29006:41:13
+    at Presence (https://3b420eaa-247c-4278-abfa-4521d85adf39-00-2dd8pgkb44p9r.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-MTIPPNJG.js?v=b0b29006:24:11)
+    at https://3b420eaa-247c-4278-abfa-4521d85adf39-00-2dd8pgkb44p9r.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tabs.js?v=b0b29006:385:13
+    at _c5 (https://3b420eaa-247c-4278-abfa-4521d85adf39-00-2dd8pgkb44p9r.worf.replit.dev/src/components/ui/tabs.tsx:68:12)
+    at div
+    at https://3b420eaa-247c-4278-abfa-4521d85adf39-00-2dd8pgkb44p9r.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-B3QJX4JT.js?v=b0b29006:41:13
+    at Provider (https://3b420eaa-247c-4278-abfa-4521d85adf39-00-2dd8pgkb44p9r.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-C6SMBVGR.js?v=b0b29006:38:15)
+    at https://3b420eaa-247c-4278-abfa-4521d85adf39-00-2dd8pgkb44p9r.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tabs.js?v=b0b29006:263:7
+    at div
+    at StreamingPlatforms (https://3b420eaa-247c-4278-abfa-4521d85adf39-00-2dd8pgkb44p9r.worf.replit.dev/src/components/game/StreamingPlatforms.tsx?t=1743363494864:48:104)
+    at main
+    at div
+    at GameLayout (https://3b420eaa-247c-4278-abfa-4521d85adf39-00-2dd8pgkb44p9r.worf.replit.dev/src/components/game/GameLayout.tsx:24:30)
+    at LoadingTransition (https://3b420eaa-247c-4278-abfa-4521d85adf39-00-2dd8pgkb44p9r.worf.replit.dev/src/components/ui/loading-transition.tsx:21:37)
+    at Route (https://3b420eaa-247c-4278-abfa-4521d85adf39-00-2dd8pgkb44p9r.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=b0b29006:280:16)
+    at Switch (https://3b420eaa-247c-4278-abfa-4521d85adf39-00-2dd8pgkb44p9r.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=b0b29006:336:17)
+    at Suspense
+    at QueryClientProvider (https://3b420eaa-247c-4278-abfa-4521d85adf39-00-2dd8pgkb44p9r.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=b0b29006:2882:3)
+    at App (https://3b420eaa-247c-4278-abfa-4521d85adf39-00-2dd8pgkb44p9r.worf.replit.dev/src/App.tsx?t=1743363494864&v=elab8wt6BBfOLTvjBQNDD:117:38)
+    at ToastProvider (https://3b420eaa-247c-4278-abfa-4521d85adf39-00-2dd8pgkb44p9r.worf.replit.dev/src/hooks/use-toast.tsx?v=N6d9k37lVe9n4QZALNiN1:20:33)
+Hit sound skipped (muted)
+Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.

@@ -1,0 +1,33 @@
+
+playSuccess is not a function
+callCallback2@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:3674:22
+invokeGuardedCallbackDev@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:3699:24
+invokeGuardedCallback@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:3733:39
+invokeGuardedCallbackAndCatchFirstError@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:3736:33
+executeDispatch@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:7014:50
+processDispatchQueueItemsInOrder@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:7034:30
+processDispatchQueue@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:7043:45
+dispatchEventsForPlugins@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:7051:31
+node_modules/react-dom/cjs/react-dom.development.js/dispatchEventForPluginEventSystem/<@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:7174:20
+batchedUpdates$1@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:18913:20
+batchedUpdates@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:3579:20
+dispatchEventForPluginEventSystem@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:7173:25
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:5478:46
+dispatchEvent@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:5472:92
+dispatchDiscreteEvent@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:5449:26
+playSuccess is not a function
+callCallback2@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:3674:22
+invokeGuardedCallbackDev@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:3699:24
+invokeGuardedCallback@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:3733:39
+invokeGuardedCallbackAndCatchFirstError@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:3736:33
+executeDispatch@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:7014:50
+processDispatchQueueItemsInOrder@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:7034:30
+processDispatchQueue@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:7043:45
+dispatchEventsForPlugins@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:7051:31
+node_modules/react-dom/cjs/react-dom.development.js/dispatchEventForPluginEventSystem/<@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:7174:20
+batchedUpdates$1@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:18913:20
+batchedUpdates@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:3579:20
+dispatchEventForPluginEventSystem@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:7173:25
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:5478:46
+dispatchEvent@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:5472:92
+dispatchDiscreteEvent@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:5449:26

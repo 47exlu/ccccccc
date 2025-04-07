@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="225" viewBox="0 0 400 225">
+  <!-- 16:9 aspect ratio -->
+  <defs>
+    <linearGradient id="studioGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a1a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#222222;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="400" height="225" fill="url(#studioGradient)" />
+  
+  <!-- Recording studio environment -->
+  <!-- Studio walls -->
+  <rect x="30" y="40" width="340" height="150" fill="#2a2a2a" />
+  
+  <!-- Studio acoustic panels -->
+  <rect x="40" y="50" width="20" height="130" fill="#444444" />
+  <rect x="70" y="50" width="20" height="130" fill="#333333" />
+  <rect x="100" y="50" width="20" height="130" fill="#444444" />
+  <rect x="310" y="50" width="20" height="130" fill="#444444" />
+  <rect x="340" y="50" width="20" height="130" fill="#333333" />
+  
+  <!-- Ceiling acoustic panels -->
+  <rect x="30" y="40" width="340" height="10" fill="#333333" />
+  <rect x="40" y="40" width="20" height="10" fill="#222222" />
+  <rect x="80" y="40" width="20" height="10" fill="#222222" />
+  <rect x="120" y="40" width="20" height="10" fill="#222222" />
+  <rect x="160" y="40" width="20" height="10" fill="#222222" />
+  <rect x="200" y="40" width="20" height="10" fill="#222222" />
+  <rect x="240" y="40" width="20" height="10" fill="#222222" />
+  <rect x="280" y="40" width="20" height="10" fill="#222222" />
+  <rect x="320" y="40" width="20" height="10" fill="#222222" />
+  
+  <!-- Recording booth/glass -->
+  <rect x="130" y="70" width="140" height="100" fill="#222222" stroke="#444444" stroke-width="2" />
+  <rect x="135" y="75" width="130" height="90" fill="#333333" />
+  
+  <!-- Microphone in booth -->
+  <circle cx="200" cy="100" r="10" fill="#111111" />
+  <rect x="198" y="110" width="4" height="40" fill="#111111" />
+  <circle cx="200" cy="100" r="5" fill="#444444" />
+  
+  <!-- Pop filter -->
+  <ellipse cx="185" cy="100" rx="8" ry="12" fill="#444444" fill-opacity="0.5" />
+  <line x1="185" y1="88" x2="185" y2="112" stroke="#333333" stroke-width="1" />
+  <line x1="184" y1="112" x2="190" y2="140" stroke="#333333" stroke-width="1" />
+  
+  <!-- Mixing console -->
+  <rect x="150" y="180" width="100" height="25" fill="#222222" />
+  <rect x="155" y="185" width="90" height="15" fill="#111111" />
+  
+  <!-- Mixing console knobs and faders -->
+  <circle cx="160" cy="192" r="2" fill="#cc3333" />
+  <circle cx="170" cy="192" r="2" fill="#33cc33" />
+  <circle cx="180" cy="192" r="2" fill="#3333cc" />
+  <rect x="190" y="187" width="2" height="10" fill="#cccccc" />
+  <rect x="200" y="189" width="2" height="8" fill="#cccccc" />
+  <rect x="210" y="186" width="2" height="12" fill="#cccccc" />
+  <rect x="220" y="190" width="2" height="6" fill="#cccccc" />
+  <circle cx="230" cy="192" r="2" fill="#999999" />
+  <circle cx="240" cy="192" r="2" fill="#999999" />
+  
+  <!-- Computer monitors -->
+  <rect x="280" y="170" width="40" height="25" fill="#111111" />
+  <rect x="283" y="173" width="34" height="19" fill="#0077cc" />
+  
+  <!-- Studio speakers -->
+  <rect x="40" y="160" width="25" height="30" fill="#222222" />
+  <rect x="335" y="160" width="25" height="30" fill="#222222" />
+  <circle cx="52" cy="170" r="8" fill="#111111" />
+  <circle cx="52" cy="170" r="3" fill="#444444" />
+  <circle cx="347" cy="170" r="8" fill="#111111" />
+  <circle cx="347" cy="170" r="3" fill="#444444" />
+  
+  <!-- Video duration -->
+  <rect x="340" y="190" width="50" height="20" fill="black" opacity="0.7" rx="5" />
+  <text x="350" y="205" font-family="Arial" font-size="12" fill="white">2:58</text>
+  
+  <!-- Studio setting indicator -->
+  <rect x="10" y="10" width="75" height="25" fill="#444444" rx="5" opacity="0.9" />
+  <text x="20" y="27" font-family="Arial" font-size="14" font-weight="bold" fill="white">STUDIO</text>
+</svg>

@@ -1,0 +1,23 @@
+
+[vite] connecting...
+[vite] connected.
+Game layout mounted
+Game layout unmounted
+Game layout mounted
+energyStore.getEnergyPercentage is not a function
+energyStore.getEnergyPercentage is not a function
+renderWithHooks@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:11548:35
+mountIndeterminateComponent@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:14926:21
+beginWork@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:15914:22
+callCallback2@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:3674:22
+invokeGuardedCallbackDev@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:3699:24
+invokeGuardedCallback@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:3733:39
+beginWork$1@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:19765:36
+performUnitOfWork@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:19198:20
+workLoopSync@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:19137:30
+renderRootSync@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:19116:15
+recoverFromConcurrentError@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:18736:42
+performSyncWorkOnRoot@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:18879:28
+flushSyncCallbacks@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:9119:30
+node_modules/react-dom/cjs/react-dom.development.js/ensureRootIsScheduled/<@https://c281ab29-133c-4ff1-822b-2e056cc3ec61-00-2gnfumvf4ouiw.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2EG2ZD3U.js?v=67b5e766:18627:21
+The above error occurred in the <EnergyDisplay> component:
