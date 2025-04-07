@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
+import { v4 as uuidv4 } from 'uuid';
 import { 
   AIRapper,
   Album,
@@ -43,7 +44,6 @@ import {
 import { useAudio } from './useAudio';
 import { useEnergyStore } from './useEnergyStore';
 import { DEFAULT_AI_RAPPERS, DEFAULT_SHOP_ITEMS, DEFAULT_SKILLS, DEFAULT_VENUES, SOCIAL_MEDIA_COSTS, SONG_TIER_INFO } from '../gameData';
-import { v4 as uuidv4 } from 'uuid';
 import { getRandomEventForWeek } from '../utils/randomEvents';
 // Import all game calculations functions
 import { 
@@ -467,7 +467,7 @@ export const useRapperGame = create<RapperGameStore>()(
     // Market Trends System
     generateMarketTrend: () => {
       const currentState = get();
-      const { v4: uuidv4 } = require('uuid');
+      // Using v4 as uuidv4 from import at the top of the file
       
       // Define possible trend types
       const trendTypes = ['rising', 'falling', 'hot', 'stable'] as const;
