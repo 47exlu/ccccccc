@@ -745,6 +745,9 @@ export const useRapperGame = create<RapperGameStore>()(
       const totalReleasedSongs = updatedState.songs?.filter(song => song.released).length || 0;
       
       // FOOL-PROOF FIX: Force all platforms to have different stream counts in the UI
+      // Initialize finalStreamsMap at this scope so it's available throughout the function
+      const finalStreamsMap: Record<string, number> = {};
+      
       // First, ensure streamingPlatforms exists and has elements
       if (!currentState.streamingPlatforms || currentState.streamingPlatforms.length === 0) {
         // Initialize empty streaming platforms if none exist
@@ -753,9 +756,6 @@ export const useRapperGame = create<RapperGameStore>()(
         // Safely get platform names, ensuring we always have an array
         const allPlatformNames = currentState.streamingPlatforms?.map(p => p.name) || [];
         const platformGrowthSet = new Set();
-        
-        // Initialize finalStreamsMap outside the if block to ensure it's always defined
-        let finalStreamsMap: Record<string, number> = {};
         
         // Process platform growth values
         if (allPlatformNames.length > 0) {
@@ -802,8 +802,7 @@ export const useRapperGame = create<RapperGameStore>()(
       // NOW update each platform with guaranteed unique values
       updatedState.streamingPlatforms = currentState.streamingPlatforms.map(platform => {
         // Get the forced unique streams allocated to this platform
-        // Ensure finalStreamsMap is defined before accessing it
-        const updatedStreams = (finalStreamsMap?.[platform.name]) || platform.totalStreams;
+        const updatedStreams = finalStreamsMap[platform.name] || platform.totalStreams;
         
         // For new players, platforms start with small numbers, then accelerate
         // Calculate base monthly listeners from streams with better progression curve
