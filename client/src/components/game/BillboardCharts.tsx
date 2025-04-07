@@ -392,13 +392,13 @@ const BillboardCharts: React.FC = () => {
                     )}
                   </div>
                   
-                  {/* Song title and artist with better truncation */}
+                  {/* Song title and artist with improved display */}
                   <div className="flex-grow min-w-0 mr-1">
                     <div className="font-medium text-xs sm:text-base leading-tight truncate">{entry.title}</div>
-                    <div className="text-[8px] sm:text-xs text-gray-500 truncate">
-                      {entry.artist}
+                    <div className="text-[10px] sm:text-sm text-gray-500 flex items-center">
+                      <span className="truncate max-w-[120px] sm:max-w-[200px] inline-block">{entry.artist}</span>
                       {entry.isPlayer && (
-                        <Badge variant="outline" className="ml-1 text-[6px] sm:text-[10px] py-0 h-3 sm:h-auto">You</Badge>
+                        <Badge variant="outline" className="ml-1 text-[8px] sm:text-[10px] py-0 h-4 sm:h-auto">You</Badge>
                       )}
                     </div>
                   </div>
@@ -451,13 +451,13 @@ const BillboardCharts: React.FC = () => {
                     )}
                   </div>
                   
-                  {/* Album title and artist with better truncation */}
+                  {/* Album title and artist with improved display */}
                   <div className="flex-grow min-w-0 mr-1">
                     <div className="font-medium text-xs sm:text-base leading-tight truncate">{entry.title}</div>
-                    <div className="text-[8px] sm:text-xs text-gray-500 truncate">
-                      {entry.artist}
+                    <div className="text-[10px] sm:text-sm text-gray-500 flex items-center">
+                      <span className="truncate max-w-[120px] sm:max-w-[200px] inline-block">{entry.artist}</span>
                       {entry.isPlayer && (
-                        <Badge variant="outline" className="ml-1 text-[6px] sm:text-[10px] py-0 h-3 sm:h-auto">You</Badge>
+                        <Badge variant="outline" className="ml-1 text-[8px] sm:text-[10px] py-0 h-4 sm:h-auto">You</Badge>
                       )}
                     </div>
                   </div>
@@ -508,14 +508,14 @@ const BillboardCharts: React.FC = () => {
                     
                     {/* Artist information with improved mobile layout */}
                     <div className="flex-grow min-w-0">
-                      <div className="font-bold text-[10px] sm:text-lg flex items-center flex-wrap leading-tight">
-                        <span className="truncate mr-1">{artist.name}</span>
+                      <div className="font-bold text-[11px] sm:text-lg flex items-center flex-wrap leading-tight">
+                        <span className="truncate max-w-[120px] sm:max-w-[250px] mr-1 inline-block">{artist.name}</span>
                         {artist.isPlayer && (
-                          <Badge variant="outline" className="text-[6px] sm:text-xs py-0 h-3 sm:h-5">You</Badge>
+                          <Badge variant="outline" className="text-[8px] sm:text-xs py-0 h-4 sm:h-5">You</Badge>
                         )}
                       </div>
-                      <div className="text-[8px] sm:text-sm flex items-center gap-1 flex-wrap leading-tight">
-                        <span className="truncate">Listeners: {artist.score.toLocaleString()}</span>
+                      <div className="text-[10px] sm:text-sm flex items-center gap-1 flex-wrap leading-tight">
+                        <span className="truncate inline-block">Listeners: {artist.score.toLocaleString()}</span>
                         <span className="flex items-center">
                           {artist.trend === 'up' && <TrendingUp className="text-green-500 h-2.5 w-2.5 sm:h-4 sm:w-4" />}
                           {artist.trend === 'down' && <ArrowDown className="text-red-500 h-2.5 w-2.5 sm:h-4 sm:w-4" />}
