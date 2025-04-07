@@ -1011,7 +1011,11 @@ const ProfileView: React.FC<{ character: any; posts: SocialMediaPost[] }> = ({ c
 };
 
 // Main Instagram Panel Component - enhanced with multiple views
-const InstagramPanel: React.FC = () => {
+interface InstagramPanelProps {
+  onBack?: () => void;
+}
+
+const InstagramPanel: React.FC<InstagramPanelProps> = ({ onBack }) => {
   const { character, postOnSocialMedia, socialMedia, socialMediaStats, aiRappers, currentWeek } = useRapperGame();
   const [instagramPosts, setInstagramPosts] = useState<SocialMediaPost[]>([]);
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
@@ -1113,8 +1117,13 @@ const InstagramPanel: React.FC = () => {
 
   // Go back to dashboard or social media hub
   const handleBackToDashboard = () => {
-    // Navigate to social media hub instead of career dashboard
-    useRapperGame.setState({ screen: 'social_media_hub' });
+    if (onBack) {
+      // Use the provided onBack function if available
+      onBack();
+    } else {
+      // Navigate to social media hub instead of career dashboard
+      useRapperGame.setState({ screen: 'social_media_hub' });
+    }
   };
   
   // Actions for posts with enhanced functionality

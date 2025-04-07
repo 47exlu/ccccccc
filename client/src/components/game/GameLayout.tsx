@@ -151,9 +151,11 @@ export function GameLayout({ children }: GameLayoutProps) {
         </button>
       </div>
       
-      {/* Main content - adjusted for better mobile viewing */}
-      <main className="w-full h-full overflow-auto flex-1 bg-gradient-to-b from-gray-900 to-gray-800">
-        {children}
+      {/* Main content - adjusted for better mobile viewing with bottom padding on mobile */}
+      <main className="w-full h-full overflow-auto flex-1 bg-gradient-to-b from-gray-900 to-gray-800 pb-16 md:pb-0">
+        <div className="h-full">
+          {children}
+        </div>
       </main>
     </div>
   );

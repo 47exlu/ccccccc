@@ -35,6 +35,8 @@ export const SocialMediaHub: React.FC = () => {
 
   // Go back to dashboard
   const handleBackToDashboard = () => {
+    // Reset selected platform first to avoid render issues
+    setSelectedPlatform(null);
     setScreen('career_dashboard');
   };
 
@@ -43,19 +45,24 @@ export const SocialMediaHub: React.FC = () => {
     setSelectedPlatform(platformName);
   };
   
+  // Go back to platform selection from a specific platform
+  const handleBackToPlatforms = () => {
+    setSelectedPlatform(null);
+  };
+  
   // Open post creation wizard
   const openPostCreationWizard = (platform?: string) => {
     setWizardPlatform(platform);
     setIsWizardOpen(true);
   };
 
-  // If a platform is selected, show its panel
+  // If a platform is selected, show its panel with back handler
   if (selectedPlatform === "Twitter") {
-    return <TwitterPanel />;
+    return <TwitterPanel onBack={handleBackToPlatforms} />;
   } else if (selectedPlatform === "Instagram") {
-    return <InstagramPanel />;
+    return <InstagramPanel onBack={handleBackToPlatforms} />;
   } else if (selectedPlatform === "TikTok") {
-    return <TikTokPanel />;
+    return <TikTokPanel onBack={handleBackToPlatforms} />;
   }
 
   // Get current stats for each platform

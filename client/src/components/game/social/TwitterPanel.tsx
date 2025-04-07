@@ -427,7 +427,11 @@ const FollowSuggestion: React.FC<FollowSuggestionProps> = ({ name, handle, avata
 };
 
 // Main Twitter Panel Component - fully updated to match X design
-const TwitterPanel: React.FC = () => {
+interface TwitterPanelProps {
+  onBack?: () => void;
+}
+
+const TwitterPanel: React.FC<TwitterPanelProps> = ({ onBack }) => {
   const { character, postOnSocialMedia, socialMedia, socialMediaStats, aiRappers, currentWeek } = useRapperGame();
   const [postText, setPostText] = useState("");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -573,8 +577,13 @@ const TwitterPanel: React.FC = () => {
 
   // Go back to dashboard or social media hub
   const handleBackToDashboard = () => {
-    // Navigate to social media hub instead of career dashboard
-    useRapperGame.setState({ screen: 'social_media_hub' });
+    if (onBack) {
+      // Use the provided onBack function if available
+      onBack();
+    } else {
+      // Otherwise navigate to social media hub
+      useRapperGame.setState({ screen: 'social_media_hub' });
+    }
   };
   
   // Actions for tweets with enhanced functionality

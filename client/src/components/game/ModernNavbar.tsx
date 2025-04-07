@@ -230,12 +230,17 @@ export function ModernNavbar() {
           
           <div className="flex items-center space-x-2">
             <div className="text-xs px-2 py-1 bg-gray-800 rounded-md border border-gray-700">
-              <span className="text-gray-400">$</span>
+              <span className="text-green-400">$</span>
               <span className="font-medium">{stats?.wealth?.toLocaleString() || 0}</span>
             </div>
             
+            <div className="text-xs px-2 py-1 bg-gray-800 rounded-md border border-gray-700">
+              <span className="text-purple-400">Rep </span>
+              <span className="font-medium">{stats?.reputation || 0}%</span>
+            </div>
+            
             <button 
-              className="p-2 rounded-md bg-gray-800 border border-gray-700 hover:bg-gray-700"
+              className="p-2 rounded-md bg-gradient-to-r from-purple-700 to-pink-700 text-white hover:opacity-90"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle menu"
             >
@@ -244,11 +249,43 @@ export function ModernNavbar() {
           </div>
         </div>
         
-        {/* Mobile menu - improved with bottom sheet style */}
+        {/* Bottom tab bar for main navigation */}
+        <div className="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-800 flex justify-around items-center p-1 z-40">
+          {['main', 'music', 'marketing', 'business', 'network'].map(categoryId => {
+            // Get first item from each category for quick access
+            const firstScreen = screens.find(s => s.category === categoryId);
+            if (!firstScreen) return null;
+            
+            const isActive = currentScreen && getActualScreenId(firstScreen.id) === currentScreen;
+            
+            return (
+              <button
+                key={categoryId}
+                className={cn(
+                  "flex flex-col items-center justify-center py-2 px-1 rounded-md transition-colors",
+                  isActive ? "text-purple-400" : "text-gray-500 hover:text-gray-300"
+                )}
+                onClick={() => handleScreenChange(getActualScreenId(firstScreen.id))}
+              >
+                {firstScreen.icon}
+                <span className="text-[10px] mt-1">{firstScreen.name}</span>
+              </button>
+            );
+          })}
+          <button
+            className="flex flex-col items-center justify-center py-2 px-1 text-gray-500 hover:text-gray-300"
+            onClick={() => setMobileMenuOpen(true)}
+          >
+            <Menu size={20} />
+            <span className="text-[10px] mt-1">More</span>
+          </button>
+        </div>
+        
+        {/* Mobile full menu - improved with bottom sheet style */}
         {mobileMenuOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex flex-col justify-end" onClick={() => setMobileMenuOpen(false)}>
+          <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex flex-col justify-end touch-none" onClick={() => setMobileMenuOpen(false)}>
             <div 
-              className="bg-gray-900 border-t border-gray-700 rounded-t-xl pb-6 pt-2 max-h-[80vh] overflow-y-auto" 
+              className="bg-gray-900 border-t border-gray-700 rounded-t-xl pb-20 pt-2 max-h-[80vh] overflow-y-auto touch-auto" 
               onClick={e => e.stopPropagation()}
             >
               {/* Pull indicator */}
@@ -256,18 +293,17 @@ export function ModernNavbar() {
                 <div className="w-12 h-1 bg-gray-700 rounded-full"></div>
               </div>
               
-              {/* Status bar */}
-              <div className="px-4 flex justify-between mb-4">
-                <div className="bg-gray-800 px-3 py-1.5 rounded-md border border-gray-700">
-                  <div className="text-xs text-gray-400">Wealth</div>
-                  <div className="font-medium">${stats?.wealth?.toLocaleString() || 0}</div>
-                </div>
-                <div className="bg-gray-800 px-3 py-1.5 rounded-md border border-gray-700">
-                  <div className="text-xs text-gray-400">Reputation</div>
-                  <div className="font-medium">{stats?.reputation || 0}%</div>
-                </div>
+              {/* Close button */}
+              <div className="absolute top-2 right-2">
+                <button 
+                  className="p-2 rounded-full bg-gray-800 text-gray-400 hover:bg-gray-700"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <X size={16} />
+                </button>
               </div>
               
+              {/* All menu items by category */}
               {categories.map(category => {
                 const categoryScreens = screens.filter(s => s.category === category.id);
                 if (categoryScreens.length === 0) return null;

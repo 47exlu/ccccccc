@@ -1268,7 +1268,11 @@ const ProfilePage: React.FC<{ character: any; posts: SocialMediaPost[] }> = ({ c
 };
 
 // Main TikTok Panel Component
-const TikTokPanel: React.FC = () => {
+interface TikTokPanelProps {
+  onBack?: () => void;
+}
+
+const TikTokPanel: React.FC<TikTokPanelProps> = ({ onBack }) => {
   const { character, postOnSocialMedia, socialMedia, socialMediaStats, aiRappers, currentWeek } = useRapperGame();
   const [tiktokPosts, setTiktokPosts] = useState<SocialMediaPost[]>([]);
   const [isCreateVideoOpen, setIsCreateVideoOpen] = useState(false);
@@ -1372,8 +1376,13 @@ const TikTokPanel: React.FC = () => {
 
   // Go back to dashboard or social media hub
   const handleBackToDashboard = () => {
-    // Navigate to social media hub instead of career dashboard
-    useRapperGame.setState({ screen: 'social_media_hub' });
+    if (onBack) {
+      // Use the provided onBack function if available
+      onBack();
+    } else {
+      // Navigate to social media hub instead of career dashboard
+      useRapperGame.setState({ screen: 'social_media_hub' });
+    }
   };
   
   // Render appropriate header based on active tab
