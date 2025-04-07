@@ -20,6 +20,7 @@ import { StreamingImpactDashboard } from './components/game/StreamingImpactDashb
 import AlbumManagement from './components/game/AlbumManagement';
 import SongPromotion from './components/game/SongPromotion';
 import MerchandiseManagement from './components/game/MerchandiseManagement';
+import { PlayerWikipedia } from './components/game/PlayerWikipedia';
 import MerchandiseSalesCharts from './components/game/MerchandiseSalesCharts';
 import FanbaseNameManager from './components/game/FanbaseNameManager';
 import MediaEventsManager from './components/game/MediaEventsManager';
@@ -157,6 +158,13 @@ const SCREEN_LOADING_MESSAGES: Record<string, string[]> = {
     "Ranking artist popularity...",
     "Measuring music industry impact...",
   ],
+  player_wikipedia: [
+    "Loading career history...",
+    "Compiling your musical journey...",
+    "Gathering career statistics...",
+    "Analyzing your accomplishments...",
+    "Creating your music biography...",
+  ],
 };
 
 // Get a random loading message for the current screen
@@ -279,6 +287,7 @@ function App() {
                   {screen === 'fanbase_naming' && <FanbaseNameManager />}
                   {screen === 'media_events' && <MediaEventsManager />}
                   {screen === 'billboard_charts' && <BillboardCharts />}
+                  {screen === 'player_wikipedia' && <PlayerWikipedia />}
                 </GameLayout>
               </LoadingTransition>
             </Route>

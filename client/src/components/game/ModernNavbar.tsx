@@ -22,7 +22,8 @@ import {
   MessageCircle,
   Menu,
   X,
-  ChevronRight
+  ChevronRight,
+  Book
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -78,7 +79,7 @@ const screens = [
   },
   { 
     id: 'merch_management', 
-    name: 'Merch', 
+    name: 'Merchandise', 
     icon: <ShoppingBag className="w-5 h-5" />,
     category: 'business' 
   },
@@ -110,6 +111,12 @@ const screens = [
     id: 'chart_impact', 
     name: 'Charts', 
     icon: <BarChart2 className="w-5 h-5" />,
+    category: 'other' 
+  },
+  { 
+    id: 'player_wikipedia', 
+    name: 'Career Wiki', 
+    icon: <Book className="w-5 h-5" />,
     category: 'other' 
   },
   { 

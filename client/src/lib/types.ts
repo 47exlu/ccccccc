@@ -29,6 +29,7 @@ export type GameScreen =
   | "fanbase_naming" // Fanbase naming screen
   | "media_events" // Media events screen (festivals, talk shows, interviews)
   | "billboard_charts" // Billboard Hot 100 and album charts screen
+  | "player_wikipedia" // Player's career Wikipedia-style page
 
 export interface CharacterInfo {
   id: string;
