@@ -17,8 +17,9 @@ import {
   ShoppingCartIcon
 } from '@/assets/icons';
 import { Tv, Radio, Calendar } from 'lucide-react';
-import { ImageIcon } from 'lucide-react';
+import { ImageIcon, TrendingUp } from 'lucide-react';
 import { RandomEvents } from './RandomEvents';
+import MarketTrends from './MarketTrends';
 import { CAREER_LEVELS } from '@/lib/gameData';
 import { WeeklyStats } from '@/lib/types';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
@@ -366,99 +367,115 @@ export function CareerDashboard() {
         </CardContent>
       </Card>
       
-      {/* Weekly Stats Chart */}
+      {/* Career Data Section - Analytics and Market Trends */}
       {weeklyStats && weeklyStats.length > 0 && (
-        <Card className="mb-6 bg-black/30 border-gray-800">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base font-medium flex justify-between items-center">
-              <div className="flex items-center">
-                <BarChartIcon size={18} className="mr-2 text-amber-400" />
-                Career Analytics
-              </div>
-              <div className="flex space-x-2">
-                <Button 
-                  size="sm" 
-                  variant={chartMetric === 'streams' ? 'default' : 'outline'} 
-                  onClick={() => setChartMetric('streams')}
-                  className={chartMetric === 'streams' ? 'bg-green-600 hover:bg-green-700' : 'bg-transparent border-gray-600 hover:bg-gray-800'}
-                >
-                  Streams
-                </Button>
-                <Button 
-                  size="sm" 
-                  variant={chartMetric === 'followers' ? 'default' : 'outline'} 
-                  onClick={() => setChartMetric('followers')}
-                  className={chartMetric === 'followers' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-transparent border-gray-600 hover:bg-gray-800'}
-                >
-                  Followers
-                </Button>
-                <Button 
-                  size="sm" 
-                  variant={chartMetric === 'wealth' ? 'default' : 'outline'} 
-                  onClick={() => setChartMetric('wealth')}
-                  className={chartMetric === 'wealth' ? 'bg-amber-600 hover:bg-amber-700' : 'bg-transparent border-gray-600 hover:bg-gray-800'}
-                >
-                  Wealth
-                </Button>
-              </div>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="h-64 w-full mt-2">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart
-                  data={weeklyStats}
-                  margin={{
-                    top: 10,
-                    right: 10,
-                    left: 0,
-                    bottom: 0,
-                  }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" stroke="#333" />
-                  <XAxis 
-                    dataKey="week" 
-                    label={{ value: 'Week', position: 'insideBottomRight', offset: -10 }}
-                    stroke="#999"
-                  />
-                  <YAxis 
-                    stroke="#999"
-                    tickFormatter={(value) => formatNumber(value)}
-                  />
-                  <Tooltip
-                    formatter={(value: number) => {
-                      if (chartMetric === 'wealth') {
-                        // Extra check for NaN values in chart tooltips
-                        if (value === undefined || isNaN(value)) {
-                          return ['$0', 'Wealth'];
-                        }
-                        return [formatMoney(value), 'Wealth'];
-                      }
-                      return [formatNumber(value), chartMetric === 'streams' ? 'Streams' : 'Followers'];
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          {/* Analytics Chart */}
+          <Card className="bg-black/30 border-gray-800">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base font-medium flex justify-between items-center">
+                <div className="flex items-center">
+                  <BarChartIcon size={18} className="mr-2 text-amber-400" />
+                  Career Analytics
+                </div>
+                <div className="flex space-x-2">
+                  <Button 
+                    size="sm" 
+                    variant={chartMetric === 'streams' ? 'default' : 'outline'} 
+                    onClick={() => setChartMetric('streams')}
+                    className={chartMetric === 'streams' ? 'bg-green-600 hover:bg-green-700' : 'bg-transparent border-gray-600 hover:bg-gray-800'}
+                  >
+                    Streams
+                  </Button>
+                  <Button 
+                    size="sm" 
+                    variant={chartMetric === 'followers' ? 'default' : 'outline'} 
+                    onClick={() => setChartMetric('followers')}
+                    className={chartMetric === 'followers' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-transparent border-gray-600 hover:bg-gray-800'}
+                  >
+                    Followers
+                  </Button>
+                  <Button 
+                    size="sm" 
+                    variant={chartMetric === 'wealth' ? 'default' : 'outline'} 
+                    onClick={() => setChartMetric('wealth')}
+                    className={chartMetric === 'wealth' ? 'bg-amber-600 hover:bg-amber-700' : 'bg-transparent border-gray-600 hover:bg-gray-800'}
+                  >
+                    Wealth
+                  </Button>
+                </div>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="h-64 w-full mt-2">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart
+                    data={weeklyStats}
+                    margin={{
+                      top: 10,
+                      right: 10,
+                      left: 0,
+                      bottom: 0,
                     }}
-                    labelFormatter={(label) => `Week ${label}`}
-                    contentStyle={{ backgroundColor: '#222', borderColor: '#444' }}
-                    itemStyle={{ color: '#fff' }}
-                  />
-                  <Area 
-                    type="monotone" 
-                    dataKey={chartMetric === 'streams' ? 'totalStreams' : chartMetric === 'followers' ? 'totalFollowers' : 'wealth'} 
-                    stroke={chartMetric === 'streams' ? '#10b981' : chartMetric === 'followers' ? '#3b82f6' : '#f59e0b'} 
-                    fill={chartMetric === 'streams' ? 'rgba(16, 185, 129, 0.2)' : chartMetric === 'followers' ? 'rgba(59, 130, 246, 0.2)' : 'rgba(245, 158, 11, 0.2)'} 
-                    activeDot={{ r: 6 }}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
-            <div className="text-xs text-center text-gray-400 mt-2">
-              {chartMetric === 'streams' 
-                ? 'Total streams over time - See your music growth week-by-week' 
-                : chartMetric === 'followers' 
-                  ? 'Social media follower growth - Your expanding audience' 
-                  : 'Cash flow progression - Track your earnings'}
-            </div>
-          </CardContent>
-        </Card>
+                  >
+                    <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+                    <XAxis 
+                      dataKey="week" 
+                      label={{ value: 'Week', position: 'insideBottomRight', offset: -10 }}
+                      stroke="#999"
+                    />
+                    <YAxis 
+                      stroke="#999"
+                      tickFormatter={(value) => formatNumber(value)}
+                    />
+                    <Tooltip
+                      formatter={(value: number) => {
+                        if (chartMetric === 'wealth') {
+                          // Extra check for NaN values in chart tooltips
+                          if (value === undefined || isNaN(value)) {
+                            return ['$0', 'Wealth'];
+                          }
+                          return [formatMoney(value), 'Wealth'];
+                        }
+                        return [formatNumber(value), chartMetric === 'streams' ? 'Streams' : 'Followers'];
+                      }}
+                      labelFormatter={(label) => `Week ${label}`}
+                      contentStyle={{ backgroundColor: '#222', borderColor: '#444' }}
+                      itemStyle={{ color: '#fff' }}
+                    />
+                    <Area 
+                      type="monotone" 
+                      dataKey={chartMetric === 'streams' ? 'totalStreams' : chartMetric === 'followers' ? 'totalFollowers' : 'wealth'} 
+                      stroke={chartMetric === 'streams' ? '#10b981' : chartMetric === 'followers' ? '#3b82f6' : '#f59e0b'} 
+                      fill={chartMetric === 'streams' ? 'rgba(16, 185, 129, 0.2)' : chartMetric === 'followers' ? 'rgba(59, 130, 246, 0.2)' : 'rgba(245, 158, 11, 0.2)'} 
+                      activeDot={{ r: 6 }}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="text-xs text-center text-gray-400 mt-2">
+                {chartMetric === 'streams' 
+                  ? 'Total streams over time - See your music growth week-by-week' 
+                  : chartMetric === 'followers' 
+                    ? 'Social media follower growth - Your expanding audience' 
+                    : 'Cash flow progression - Track your earnings'}
+              </div>
+            </CardContent>
+          </Card>
+          
+          {/* Market Trends Panel */}
+          <Card className="bg-black/30 border-gray-800">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base font-medium flex items-center">
+                <TrendingUp size={18} className="mr-2 text-pink-400" />
+                Market Trends
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <MarketTrends />
+            </CardContent>
+          </Card>
+        </div>
       )}
       
       {/* Navigation Cards */}

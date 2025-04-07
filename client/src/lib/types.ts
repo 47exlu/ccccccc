@@ -593,6 +593,21 @@ export interface SubscriptionInfo {
   benefits: string[];
 }
 
+// Market Trends Types
+export type TrendType = 'rising' | 'falling' | 'hot' | 'stable';
+
+export interface MarketTrend {
+  id: string;
+  name: string;
+  description: string;
+  type: TrendType;
+  affectedPlatforms: string[];
+  impactFactor: number; // 1-10 scale
+  duration: number; // in weeks
+  startWeek: number;
+  endWeek?: number;
+}
+
 // Main game state
 export interface GameState {
   screen: GameScreen;
@@ -636,6 +651,10 @@ export interface GameState {
   confirmedMediaEvents?: MediaEvent[]; // Media events the player has confirmed attendance
   completedMediaEvents?: MediaEvent[]; // Historical media events the player has participated in
   missedMediaEvents?: MediaEvent[]; // Media events the player missed or declined
+  
+  // Market trends system
+  activeMarketTrends?: MarketTrend[]; // Currently active market trends
+  pastMarketTrends?: MarketTrend[]; // Historical market trends
   
   // Premium store properties
   week?: number; // Alias for currentWeek for NewStorePanel

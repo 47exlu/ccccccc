@@ -430,7 +430,11 @@ const initialState: GameState = {
   invitedMediaEvents: [],
   confirmedMediaEvents: [],
   completedMediaEvents: [],
-  missedMediaEvents: []
+  missedMediaEvents: [],
+  
+  // Market trends system
+  activeMarketTrends: [],
+  pastMarketTrends: []
 };
 
 // Create the store with combined state and actions
@@ -458,6 +462,225 @@ export const useRapperGame = create<RapperGameStore>()(
         subscriptionActive: updates.subscriptionInfo?.isSubscribed ?? state.subscriptionInfo.isSubscribed,
         subscriptionTier: updates.subscriptionInfo?.subscriptionType ?? state.subscriptionInfo.subscriptionType
       }));
+    },
+    
+    // Market Trends System
+    generateMarketTrend: () => {
+      const currentState = get();
+      const { v4: uuidv4 } = require('uuid');
+      
+      // Define possible trend types
+      const trendTypes = ['rising', 'falling', 'hot', 'stable'] as const;
+      
+      // Define possible trend names based on type
+      const trendNames = {
+        rising: [
+          'Viral Challenges',
+          'Short-form Content Surge',
+          'Algorithm Shift',
+          'Platform Integration',
+          'Collaborative Playlists'
+        ],
+        falling: [
+          'Streaming Royalty Dispute',
+          'Platform Policy Change',
+          'Market Saturation',
+          'Subscription Price Increase',
+          'Content Moderation Wave'
+        ],
+        hot: [
+          'Cross-Platform Promotion',
+          'Podcast Integration',
+          'Social Media Verification',
+          'AI-Generated Content',
+          'Interactive Music Experiences'
+        ],
+        stable: [
+          'Seasonal Listening Habits',
+          'Platform Redesign',
+          'Industry Standardization',
+          'Premium Content Features',
+          'Offline Listening Tools'
+        ]
+      };
+      
+      // Define possible trend descriptions based on type
+      const trendDescriptions = {
+        rising: [
+          'Short-form video challenges featuring music clips are trending, driving discovery.',
+          'Platform algorithm changes are favoring indie artists with authentic content.',
+          'Cross-platform music sharing features have increased engagement.',
+          'User-created playlists are gaining prominence over editorial content.',
+          'New demographics are adopting streaming platforms, expanding audience reach.'
+        ],
+        falling: [
+          'Artists are boycotting platforms due to royalty payment disputes.',
+          'New policy changes have reduced song visibility in recommendation engines.',
+          'Market saturation in certain genres is decreasing individual stream shares.',
+          'Price increases for premium tiers have reduced subscriber engagement.',
+          'Platform focus shift to podcasts has decreased music prominence.'
+        ],
+        hot: [
+          'Music featuring in popular podcasts is driving increased streams.',
+          'Artist verification processes are boosting credibility and plays.',
+          'AI-recommended playlists are creating new hit songs seemingly overnight.',
+          'Interactive music experiences are creating deeper fan engagement.',
+          'Livestream performances with integrated streaming links are trending.'
+        ],
+        stable: [
+          'Seasonal listening patterns have established consistent market shares.',
+          'Platform redesign has maintained user engagement without disruption.',
+          'Industry standardization efforts have stabilized cross-platform metrics.',
+          'Premium content features are providing reliable revenue streams.',
+          'Offline listening tools continue to serve markets with limited connectivity.'
+        ]
+      };
+      
+      // List of platforms that could be affected
+      const allPlatforms = [
+        'Spotify',
+        'Apple Music',
+        'YouTube Music',
+        'SoundCloud',
+        'TikTok',
+        'Instagram',
+        'Twitter',
+        'YouTube',
+        'YouTube Vevo'
+      ];
+      
+      // Randomly select a trend type
+      const trendType = trendTypes[Math.floor(Math.random() * trendTypes.length)];
+      
+      // Randomly select name and description based on trend type
+      const nameOptions = trendNames[trendType];
+      const descriptionOptions = trendDescriptions[trendType];
+      
+      const name = nameOptions[Math.floor(Math.random() * nameOptions.length)];
+      const description = descriptionOptions[Math.floor(Math.random() * descriptionOptions.length)];
+      
+      // Select 1-3 platforms that are affected
+      const numAffectedPlatforms = Math.floor(Math.random() * 3) + 1;
+      const shuffledPlatforms = [...allPlatforms].sort(() => 0.5 - Math.random());
+      const affectedPlatforms = shuffledPlatforms.slice(0, numAffectedPlatforms);
+      
+      // Determine impact factor (1-10) with higher values for hot and rising trends
+      let impactFactor = 0;
+      if (trendType === 'hot') {
+        impactFactor = Math.floor(Math.random() * 3) + 7; // 7-10
+      } else if (trendType === 'rising') {
+        impactFactor = Math.floor(Math.random() * 3) + 5; // 5-8
+      } else if (trendType === 'falling') {
+        impactFactor = Math.floor(Math.random() * 4) + 4; // 4-8
+      } else {
+        impactFactor = Math.floor(Math.random() * 4) + 3; // 3-7
+      }
+      
+      // Determine duration (in weeks)
+      const duration = Math.floor(Math.random() * 6) + 2; // 2-8 weeks
+      
+      // Create the trend object
+      const newTrend: MarketTrend = {
+        id: uuidv4(),
+        name,
+        description,
+        type: trendType,
+        affectedPlatforms,
+        impactFactor,
+        duration,
+        startWeek: currentState.currentWeek
+      };
+      
+      // Add to active trends
+      set(state => ({
+        activeMarketTrends: [...state.activeMarketTrends, newTrend]
+      }));
+      
+      return newTrend;
+    },
+    
+    processMarketTrends: () => {
+      const currentState = get();
+      const updatedState: Partial<GameState> = {};
+      
+      if (!currentState.activeMarketTrends || currentState.activeMarketTrends.length === 0) {
+        return;
+      }
+      
+      // Process active trends
+      const { updatedActiveTrends, expiredTrends } = currentState.activeMarketTrends.reduce(
+        (acc, trend) => {
+          // Calculate remaining weeks
+          const remainingWeeks = trend.startWeek + trend.duration - currentState.currentWeek;
+          
+          if (remainingWeeks <= 0) {
+            // Trend has expired, add to expired trends
+            acc.expiredTrends.push({
+              ...trend,
+              endWeek: currentState.currentWeek
+            });
+          } else {
+            // Trend is still active
+            acc.updatedActiveTrends.push(trend);
+          }
+          
+          return acc;
+        },
+        { updatedActiveTrends: [] as MarketTrend[], expiredTrends: [] as MarketTrend[] }
+      );
+      
+      // Update state with processed trends
+      updatedState.activeMarketTrends = updatedActiveTrends;
+      updatedState.pastMarketTrends = [
+        ...(currentState.pastMarketTrends || []),
+        ...expiredTrends
+      ];
+      
+      // Apply trend effects to streaming platforms (this would be implemented in advanceWeek)
+      // This is just a placeholder for the actual implementation
+      
+      set(updatedState);
+    },
+    
+    getTrendEffect: (platformName: string): number => {
+      const currentState = get();
+      
+      if (!currentState.activeMarketTrends || currentState.activeMarketTrends.length === 0) {
+        return 1.0; // No effect if no active trends
+      }
+      
+      // Find trends affecting this platform
+      const relevantTrends = currentState.activeMarketTrends.filter(trend => 
+        trend.affectedPlatforms.includes(platformName)
+      );
+      
+      if (relevantTrends.length === 0) {
+        return 1.0; // No effect if no relevant trends
+      }
+      
+      // Calculate combined effect
+      return relevantTrends.reduce((totalEffect, trend) => {
+        // Base multiplier depends on trend type
+        let trendMultiplier = 1.0;
+        
+        switch (trend.type) {
+          case 'rising':
+            trendMultiplier = 1.0 + (trend.impactFactor * 0.03); // +3% to +30%
+            break;
+          case 'falling':
+            trendMultiplier = Math.max(0.7, 1.0 - (trend.impactFactor * 0.03)); // -3% to -30% (min 0.7)
+            break;
+          case 'hot':
+            trendMultiplier = 1.0 + (trend.impactFactor * 0.05); // +5% to +50%
+            break;
+          case 'stable':
+            // Stable trends have minimal impact on growth but reduce volatility
+            trendMultiplier = 1.0 + (trend.impactFactor * 0.01); // +1% to +10%
+            break;
+        }
+        
+        return totalEffect * trendMultiplier;
+      }, 1.0);
     },
     
     // Game navigation
@@ -526,6 +749,15 @@ export const useRapperGame = create<RapperGameStore>()(
       const updatedState: Partial<GameState> = {
         currentWeek: newWeek
       };
+      
+      // Process market trends first
+      // This function will update activeMarketTrends and pastMarketTrends in updatedState
+      get().processMarketTrends();
+      
+      // Random chance to generate a new market trend (15% chance each week)
+      if (Math.random() < 0.15) {
+        get().generateMarketTrend();
+      }
       
       // STANDARDIZED MARKET SHARE - Define the same market share values used everywhere
       // This must match the exact values in releaseSong and respondToFeatureRequest
