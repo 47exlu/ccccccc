@@ -476,20 +476,22 @@ const TikTokFeed: React.FC<TikTokFeedProps> = ({ posts, character, feedType }) =
     console.log(`Liked video: ${id}`);
     
     // Update state in local posts if found
-    setTiktokPosts((prevPosts: SocialMediaPost[]) => 
-      prevPosts.map((post: SocialMediaPost) => {
-        if (post.id === id) {
-          // Toggle like state and update count
-          const liked = post.liked || false;
-          return {
-            ...post,
-            likes: liked ? Math.max(0, post.likes - 1) : post.likes + 1,
-            liked: !liked
-          };
-        }
-        return post;
-      })
-    );
+    if (typeof setTiktokPosts === 'function') {
+      setTiktokPosts((prevPosts: SocialMediaPost[]) => 
+        prevPosts.map((post: SocialMediaPost) => {
+          if (post.id === id) {
+            // Toggle like state and update count
+            const liked = post.liked || false;
+            return {
+              ...post,
+              likes: liked ? Math.max(0, post.likes - 1) : post.likes + 1,
+              liked: !liked
+            };
+          }
+          return post;
+        })
+      );
+    }
     
     // Play heart animation sound
     const audio = new Audio("/assets/sounds/pop.mp3");
@@ -508,17 +510,19 @@ const TikTokFeed: React.FC<TikTokFeedProps> = ({ posts, character, feedType }) =
     console.log(`Comment on video: ${id}`);
     
     // Update state in local posts if found to increment comment count
-    setTiktokPosts((prevPosts: SocialMediaPost[]) => 
-      prevPosts.map((post: SocialMediaPost) => {
-        if (post.id === id) {
-          return {
-            ...post,
-            comments: post.comments + 1
-          };
-        }
-        return post;
-      })
-    );
+    if (typeof setTiktokPosts === 'function') {
+      setTiktokPosts((prevPosts: SocialMediaPost[]) => 
+        prevPosts.map((post: SocialMediaPost) => {
+          if (post.id === id) {
+            return {
+              ...post,
+              comments: post.comments + 1
+            };
+          }
+          return post;
+        })
+      );
+    }
     
     // Show success notification
     toast.success("Comment added!", {
@@ -542,18 +546,20 @@ const TikTokFeed: React.FC<TikTokFeedProps> = ({ posts, character, feedType }) =
     console.log(`Bookmarked video: ${id}`);
     
     // Update state in local posts if found
-    setTiktokPosts((prevPosts: SocialMediaPost[]) => 
-      prevPosts.map((post: SocialMediaPost) => {
-        if (post.id === id) {
-          return {
-            ...post,
-            saved: !(post.saved || false),
-            bookmarks: post.bookmarks ? (post.saved ? post.bookmarks - 1 : post.bookmarks + 1) : 1
-          };
-        }
-        return post;
-      })
-    );
+    if (typeof setTiktokPosts === 'function') {
+      setTiktokPosts((prevPosts: SocialMediaPost[]) => 
+        prevPosts.map((post: SocialMediaPost) => {
+          if (post.id === id) {
+            return {
+              ...post,
+              saved: !(post.saved || false),
+              bookmarks: post.bookmarks ? (post.saved ? post.bookmarks - 1 : post.bookmarks + 1) : 1
+            };
+          }
+          return post;
+        })
+      );
+    }
     
     // Show success notification
     toast.success("Video saved to favorites!", {

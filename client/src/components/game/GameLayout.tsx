@@ -68,7 +68,7 @@ export function GameLayout({ children }: GameLayoutProps) {
   const showNavbar = screen !== 'main_menu' && screen !== 'character_creation';
 
   return (
-    <div className="w-full h-full bg-black text-white">
+    <div className="w-full h-full flex flex-col bg-gray-900 text-white overflow-hidden">
       {/* Modern Navigation Bar */}
       {showNavbar && <ModernNavbar />}
       
@@ -84,7 +84,7 @@ export function GameLayout({ children }: GameLayoutProps) {
         <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
           <DialogTrigger asChild>
             <button 
-              className="w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 flex items-center justify-center transition-colors"
+              className="w-10 h-10 rounded-full bg-gray-800/80 hover:bg-gray-700 flex items-center justify-center transition-colors"
               title="Settings"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -93,7 +93,7 @@ export function GameLayout({ children }: GameLayoutProps) {
               </svg>
             </button>
           </DialogTrigger>
-          <DialogContent className="bg-black border border-gray-800 text-white">
+          <DialogContent className="bg-gray-900 border border-gray-700 text-white max-w-[90vw] md:max-w-md">
             <DialogHeader>
               <DialogTitle className="text-xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">Game Settings</DialogTitle>
             </DialogHeader>
@@ -131,7 +131,7 @@ export function GameLayout({ children }: GameLayoutProps) {
         
         {/* Sound toggle button */}
         <button 
-          className="w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 flex items-center justify-center transition-colors"
+          className="w-10 h-10 rounded-full bg-gray-800/80 hover:bg-gray-700 flex items-center justify-center transition-colors"
           onClick={toggleMute}
           title={isMuted ? "Unmute" : "Mute"}
         >
@@ -151,8 +151,8 @@ export function GameLayout({ children }: GameLayoutProps) {
         </button>
       </div>
       
-      {/* Main content */}
-      <main className="w-full h-full">
+      {/* Main content - adjusted for better mobile viewing */}
+      <main className="w-full h-full overflow-auto flex-1 bg-gradient-to-b from-gray-900 to-gray-800">
         {children}
       </main>
     </div>

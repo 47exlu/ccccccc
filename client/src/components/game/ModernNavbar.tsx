@@ -151,28 +151,28 @@ export function ModernNavbar() {
   return (
     <>
       {/* Desktop sidebar */}
-      <div className="hidden md:flex flex-col bg-black text-white w-64 h-full overflow-auto border-r border-gray-800">
+      <div className="hidden md:flex flex-col bg-gray-900 text-white w-64 h-full overflow-auto border-r border-gray-700">
         {/* User profile */}
-        <div className="p-4 border-b border-gray-800">
+        <div className="p-4 border-b border-gray-700 bg-gradient-to-r from-gray-900 to-gray-800">
           <div className="flex items-center space-x-3">
             {character?.image ? (
-              <img src={character.image} alt={character?.artistName} className="h-10 w-10 rounded-full object-cover" />
+              <img src={character.image} alt={character?.artistName} className="h-10 w-10 rounded-full object-cover border-2 border-purple-500" />
             ) : (
-              <div className="h-10 w-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold">
+              <div className="h-10 w-10 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center text-white font-bold border-2 border-purple-400">
                 {character?.artistName?.charAt(0) || '?'}
               </div>
             )}
             <div>
               <div className="font-semibold">{character?.artistName || 'Artist'}</div>
-              <div className="text-xs text-gray-400">Week {currentScreen ? (currentScreen === 'character_creation' ? 0 : currentScreen === 'main_menu' ? 0 : stats?.currentWeek || 0) : 0}</div>
+              <div className="text-xs text-gray-400">Week {currentScreen ? (currentScreen === 'character_creation' ? 0 : currentScreen === 'main_menu' ? 0 : stats?.week || 0) : 0}</div>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-2 mt-3">
-            <div className="bg-gray-900 p-2 rounded">
+            <div className="bg-gray-800 p-2 rounded border border-gray-700">
               <div className="text-xs text-gray-400">Wealth</div>
               <div className="font-medium">${stats?.wealth?.toLocaleString() || 0}</div>
             </div>
-            <div className="bg-gray-900 p-2 rounded">
+            <div className="bg-gray-800 p-2 rounded border border-gray-700">
               <div className="text-xs text-gray-400">Reputation</div>
               <div className="font-medium">{stats?.reputation || 0}%</div>
             </div>
@@ -194,7 +194,9 @@ export function ModernNavbar() {
                       key={screen.id}
                       className={cn(
                         "w-full flex items-center space-x-3 px-4 py-2.5 text-sm text-left transition-colors hover:bg-gray-800",
-                        currentScreen === getActualScreenId(screen.id) && "bg-gradient-to-r from-purple-900 to-purple-800 text-white"
+                        currentScreen === getActualScreenId(screen.id) 
+                          ? "bg-gradient-to-r from-purple-800 to-purple-700 text-white" 
+                          : "text-gray-300 hover:text-white"
                       )}
                       onClick={() => handleScreenChange(getActualScreenId(screen.id))}
                     >
@@ -209,58 +211,91 @@ export function ModernNavbar() {
         </div>
       </div>
       
-      {/* Mobile header */}
-      <div className="md:hidden bg-black text-white border-b border-gray-800">
-        <div className="flex items-center justify-between p-4">
+      {/* Mobile header - improved for mobile usability */}
+      <div className="md:hidden bg-gray-900 text-white border-b border-gray-700 sticky top-0 z-40">
+        <div className="flex items-center justify-between p-3">
           <div className="flex items-center space-x-3">
             {character?.image ? (
-              <img src={character.image} alt={character?.artistName} className="h-8 w-8 rounded-full object-cover" />
+              <img src={character.image} alt={character?.artistName} className="h-8 w-8 rounded-full object-cover border border-purple-500" />
             ) : (
-              <div className="h-8 w-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold">
+              <div className="h-8 w-8 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center text-white font-bold">
                 {character?.artistName?.charAt(0) || '?'}
               </div>
             )}
-            <div className="font-semibold text-sm">{character?.artistName || 'Artist'}</div>
+            <div>
+              <div className="font-semibold text-sm">{character?.artistName || 'Artist'}</div>
+              <div className="text-xs text-gray-400">Week {currentScreen ? (currentScreen === 'character_creation' ? 0 : currentScreen === 'main_menu' ? 0 : stats?.week || 0) : 0}</div>
+            </div>
           </div>
           
-          <button 
-            className="p-2 rounded-md hover:bg-gray-800"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
+          <div className="flex items-center space-x-2">
+            <div className="text-xs px-2 py-1 bg-gray-800 rounded-md border border-gray-700">
+              <span className="text-gray-400">$</span>
+              <span className="font-medium">{stats?.wealth?.toLocaleString() || 0}</span>
+            </div>
+            
+            <button 
+              className="p-2 rounded-md bg-gray-800 border border-gray-700 hover:bg-gray-700"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+            </button>
+          </div>
         </div>
         
-        {/* Mobile menu */}
+        {/* Mobile menu - improved with bottom sheet style */}
         {mobileMenuOpen && (
-          <div className="bg-black border-t border-gray-800 pb-2 max-h-[70vh] overflow-y-auto">
-            {categories.map(category => {
-              const categoryScreens = screens.filter(s => s.category === category.id);
-              if (categoryScreens.length === 0) return null;
+          <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex flex-col justify-end" onClick={() => setMobileMenuOpen(false)}>
+            <div 
+              className="bg-gray-900 border-t border-gray-700 rounded-t-xl pb-6 pt-2 max-h-[80vh] overflow-y-auto" 
+              onClick={e => e.stopPropagation()}
+            >
+              {/* Pull indicator */}
+              <div className="flex justify-center mb-2">
+                <div className="w-12 h-1 bg-gray-700 rounded-full"></div>
+              </div>
               
-              return (
-                <div key={category.id} className="mb-2">
-                  <div className="px-4 py-1 text-xs font-semibold text-gray-500 uppercase">{category.name}</div>
-                  <div className="grid grid-cols-3 gap-1 px-2">
-                    {categoryScreens.map(screen => (
-                      <button
-                        key={screen.id}
-                        className={cn(
-                          "flex flex-col items-center justify-center space-y-1 p-2 rounded-md text-center transition-colors",
-                          currentScreen === getActualScreenId(screen.id) 
-                            ? "bg-gradient-to-r from-purple-900 to-purple-800 text-white" 
-                            : "hover:bg-gray-800 text-gray-300"
-                        )}
-                        onClick={() => handleScreenChange(getActualScreenId(screen.id))}
-                      >
-                        {screen.icon}
-                        <span className="text-xs">{screen.name}</span>
-                      </button>
-                    ))}
-                  </div>
+              {/* Status bar */}
+              <div className="px-4 flex justify-between mb-4">
+                <div className="bg-gray-800 px-3 py-1.5 rounded-md border border-gray-700">
+                  <div className="text-xs text-gray-400">Wealth</div>
+                  <div className="font-medium">${stats?.wealth?.toLocaleString() || 0}</div>
                 </div>
-              );
-            })}
+                <div className="bg-gray-800 px-3 py-1.5 rounded-md border border-gray-700">
+                  <div className="text-xs text-gray-400">Reputation</div>
+                  <div className="font-medium">{stats?.reputation || 0}%</div>
+                </div>
+              </div>
+              
+              {categories.map(category => {
+                const categoryScreens = screens.filter(s => s.category === category.id);
+                if (categoryScreens.length === 0) return null;
+                
+                return (
+                  <div key={category.id} className="mb-4">
+                    <div className="px-4 py-1 text-xs font-semibold text-gray-500 uppercase">{category.name}</div>
+                    <div className="grid grid-cols-3 gap-2 px-2">
+                      {categoryScreens.map(screen => (
+                        <button
+                          key={screen.id}
+                          className={cn(
+                            "flex flex-col items-center justify-center space-y-1 p-3 rounded-md text-center transition-colors",
+                            currentScreen === getActualScreenId(screen.id) 
+                              ? "bg-gradient-to-r from-purple-800 to-purple-700 text-white border border-purple-600" 
+                              : "bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white border border-gray-700"
+                          )}
+                          onClick={() => handleScreenChange(getActualScreenId(screen.id))}
+                        >
+                          {screen.icon}
+                          <span className="text-xs font-medium">{screen.name}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         )}
       </div>
