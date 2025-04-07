@@ -55,7 +55,7 @@ export function Collaborations() {
   };
   
   // Get pending collaboration requests
-  const pendingRequests = collaborationRequests.filter(req => req.accepted === null);
+  const pendingRequests = collaborationRequests.filter(req => req.status === "pending");
   
   // Handle requesting a feature with random tier
   const handleRequestFeature = () => {
@@ -275,27 +275,27 @@ export function Collaborations() {
               ) : (
                 <div className="space-y-4">
                   {pendingRequests.map(request => {
-                    const rapper = aiRappers.find(r => r.id === request.rapperId);
+                    const rapper = aiRappers.find(r => r.id === request.fromRapperId);
                     if (!rapper) return null;
                     
                     return (
-                      <Card key={`request_${request.rapperId}_${request.weekOffered}`} className="bg-black/30 border-gray-800">
+                      <Card key={`request_${request.fromRapperId}_${request.weekRequested}`} className="bg-black/30 border-gray-800">
                         <CardContent className="p-4">
                           <div className="flex items-center justify-between mb-3">
                             <div>
                               <h3 className="font-bold">{rapper.name}</h3>
                               <p className="text-xs text-gray-400">
-                                Requested in Week {request.weekOffered}
+                                Requested in Week {request.weekRequested}
                               </p>
                             </div>
                             <Badge className={`bg-amber-600`}>
-                              Tier {request.songTier}
+                              Tier {request.tier}
                             </Badge>
                           </div>
                           
                           <div className="text-sm text-gray-300 mb-4">
                             <p>
-                              {rapper.name} wants you to feature on their upcoming {SONG_TIER_INFO[request.songTier].name.toLowerCase()} track.
+                              {rapper.name} wants you to feature on their upcoming {SONG_TIER_INFO[request.tier as SongTier].name.toLowerCase()} track.
                             </p>
                             <p className="mt-1">
                               This collaboration could help expand your audience and improve your relationship.
@@ -330,24 +330,24 @@ export function Collaborations() {
               <CardTitle className="text-lg">Past Collaborations</CardTitle>
             </CardHeader>
             <CardContent>
-              {collaborationRequests.filter(req => req.accepted !== null).length === 0 ? (
+              {collaborationRequests.filter(req => req.status === "accepted" || req.status === "rejected").length === 0 ? (
                 <div className="text-center py-4 text-gray-400">
                   You haven't participated in any collaborations yet.
                 </div>
               ) : (
                 <div className="space-y-3">
                   {collaborationRequests
-                    .filter(req => req.accepted !== null)
-                    .sort((a, b) => b.weekOffered - a.weekOffered)
+                    .filter(req => req.status === "accepted" || req.status === "rejected")
+                    .sort((a, b) => b.weekRequested - a.weekRequested)
                     .map(request => {
-                      const rapper = aiRappers.find(r => r.id === request.rapperId);
+                      const rapper = aiRappers.find(r => r.id === request.fromRapperId);
                       if (!rapper) return null;
                       
                       return (
                         <div 
-                          key={`${request.rapperId}_${request.weekOffered}_${request.accepted ? 'accepted' : 'declined'}`}
+                          key={`${request.fromRapperId}_${request.weekRequested}_${request.status}`}
                           className={`flex items-center justify-between p-3 rounded border ${
-                            request.accepted 
+                            request.status === "accepted" 
                               ? 'bg-green-900/20 border-green-800' 
                               : 'bg-red-900/20 border-red-800'
                           }`}
@@ -355,11 +355,11 @@ export function Collaborations() {
                           <div>
                             <div className="font-medium">{rapper.name}</div>
                             <div className="text-xs text-gray-400">
-                              Week {request.weekOffered} • Tier {request.songTier} Song
+                              Week {request.weekRequested} • Tier {request.tier} Song
                             </div>
                           </div>
-                          <Badge className={request.accepted ? 'bg-green-600' : 'bg-red-600'}>
-                            {request.accepted ? 'Accepted' : 'Declined'}
+                          <Badge className={request.status === "accepted" ? 'bg-green-600' : 'bg-red-600'}>
+                            {request.status === "accepted" ? 'Accepted' : 'Declined'}
                           </Badge>
                         </div>
                       );

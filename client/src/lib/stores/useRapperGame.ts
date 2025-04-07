@@ -745,15 +745,21 @@ export const useRapperGame = create<RapperGameStore>()(
       const totalReleasedSongs = updatedState.songs?.filter(song => song.released).length || 0;
       
       // FOOL-PROOF FIX: Force all platforms to have different stream counts in the UI
-      // First, ensure each platformGrowth value is unique by making small adjustments
-      const allPlatformNames = currentState.streamingPlatforms?.map(p => p.name) || [];
-      const platformGrowthSet = new Set();
-      
-      // Initialize finalStreamsMap outside the if block to ensure it's always defined
-      let finalStreamsMap: Record<string, number> = {};
-      
-      if (allPlatformNames && allPlatformNames.length > 0) {
-        allPlatformNames.forEach(platformName => {
+      // First, ensure streamingPlatforms exists and has elements
+      if (!currentState.streamingPlatforms || currentState.streamingPlatforms.length === 0) {
+        // Initialize empty streaming platforms if none exist
+        updatedState.streamingPlatforms = [];
+      } else {
+        // Safely get platform names, ensuring we always have an array
+        const allPlatformNames = currentState.streamingPlatforms?.map(p => p.name) || [];
+        const platformGrowthSet = new Set();
+        
+        // Initialize finalStreamsMap outside the if block to ensure it's always defined
+        let finalStreamsMap: Record<string, number> = {};
+        
+        // Process platform growth values
+        if (allPlatformNames.length > 0) {
+          allPlatformNames.forEach(platformName => {
           let growth = platformStreamMap[platformName] || 0;
           
           // Make sure each growth value is unique
@@ -767,30 +773,29 @@ export const useRapperGame = create<RapperGameStore>()(
         });
         
         // Calculate initial values
-        allPlatformNames.forEach(platformName => {
-          const platform = currentState.streamingPlatforms?.find(p => p.name === platformName);
-          if (platform) {
-            finalStreamsMap[platformName] = platform.totalStreams + (platformStreamMap[platformName] || 0);
-          }
-        });
-        
-        // Ensure no duplicate values
-        const finalStreamsSet = new Set();
-        allPlatformNames.forEach(platformName => {
-          let totalStreams = finalStreamsMap[platformName];
-          
-          if (totalStreams !== undefined) {
-            while (finalStreamsSet.has(totalStreams)) {
-              totalStreams += 1 + Math.floor(Math.random() * 5);
+        if (allPlatformNames.length > 0) {
+          allPlatformNames.forEach(platformName => {
+            const platform = currentState.streamingPlatforms?.find(p => p.name === platformName);
+            if (platform) {
+              finalStreamsMap[platformName] = platform.totalStreams + (platformStreamMap[platformName] || 0);
             }
+          });
+          
+          // Ensure no duplicate values
+          const finalStreamsSet = new Set();
+          allPlatformNames.forEach(platformName => {
+            let totalStreams = finalStreamsMap[platformName];
             
-            finalStreamsSet.add(totalStreams);
-            finalStreamsMap[platformName] = totalStreams;
-          }
-        });
-      } else {
-        // If we don't have platform names, initialize with empty object
-        console.warn("No streaming platforms found when advancing week");
+            if (totalStreams !== undefined) {
+              while (finalStreamsSet.has(totalStreams)) {
+                totalStreams += 1 + Math.floor(Math.random() * 5);
+              }
+              
+              finalStreamsSet.add(totalStreams);
+              finalStreamsMap[platformName] = totalStreams;
+            }
+          });
+        }
       }
       
       // NOW update each platform with guaranteed unique values
@@ -1755,16 +1760,13 @@ export const useRapperGame = create<RapperGameStore>()(
       // Set the updated state
       set(updatedState);
       
-      // Update Twitter trends and music chart accounts
-      // We call this after setting the state to ensure we have the latest week number
+      // Update trends and reset energy
       get().updateTrends();
-      
-      // Reset energy to maximum when advancing to the next week
       useEnergyStore.getState().resetEnergy();
     },
     
     // Music production
-    createSong: (title, tier, featuring) => {
+    createSong: (title: string, tier: SongTier, featuring: string[]) => {
       const currentState = get();
       
       // Handle free tier (0) differently
@@ -1874,7 +1876,7 @@ export const useRapperGame = create<RapperGameStore>()(
       });
     },
     
-    buySongFromShop: (shopItemId) => {
+    buySongFromShop: (shopItemId: string) => {
       const currentState = get();
       const shopItem = currentState.shopItems.find(item => item.id === shopItemId);
       
@@ -3272,10 +3274,10 @@ export const useRapperGame = create<RapperGameStore>()(
       });
     },
     
-    respondToFeatureRequest: (rapperId, accept) => {
+    respondToFeatureRequest: (rapperId: string, accept: boolean) => {
       const currentState = get();
       const requestIndex = currentState.collaborationRequests.findIndex(
-        req => req.rapperId === rapperId && req.accepted === null
+        req => req.fromRapperId === rapperId && req.status === "pending"
       );
       
       if (requestIndex === -1) return;
@@ -3289,7 +3291,7 @@ export const useRapperGame = create<RapperGameStore>()(
       const updatedRequests = [...currentState.collaborationRequests];
       updatedRequests[requestIndex] = {
         ...request,
-        accepted: accept
+        status: accept ? "accepted" : "rejected"
       };
       
       if (accept) {
@@ -3304,7 +3306,7 @@ export const useRapperGame = create<RapperGameStore>()(
         );
         
         // Calculate payment for feature (based on tier and rapper popularity)
-        const basePay = request.songTier * 1000;
+        const basePay = request.tier * 1000;
         const popularityMultiplier = rapper.popularity / 50; // 0.5 to 2.0
         const featurePayment = Math.floor(basePay * popularityMultiplier);
         
@@ -3323,7 +3325,7 @@ export const useRapperGame = create<RapperGameStore>()(
         const newSong: Song = {
           id: `ai-${rapperId}-ft-player-${Date.now()}`,
           title: songTitle,
-          tier: request.songTier,
+          tier: request.tier,
           releaseDate: currentState.currentWeek,
           streams: 0, // Start with 0 streams
           isActive: true,
@@ -3378,7 +3380,7 @@ export const useRapperGame = create<RapperGameStore>()(
           const platformStreams = Math.floor(playerStreamShare * combinedWeight * randomFactor);
           
           // Calculate new monthly listeners from feature (smaller boost than releasing own song)
-          const listenerBoost = (request.songTier / 10) * rapper.popularity / 100; // 0-5% boost based on tier and rapper popularity
+          const listenerBoost = (request.tier / 10) * rapper.popularity / 100; // 0-5% boost based on tier and rapper popularity
           const newListeners = Math.floor(platform.listeners * (1 + listenerBoost));
           
           return {
