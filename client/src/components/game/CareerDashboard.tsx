@@ -137,15 +137,23 @@ export function CareerDashboard() {
 
   if (!character) return null;
 
-  // Calculate total stats across platforms with null safety checks
-  const totalFollowers = socialMedia?.reduce((sum, platform) => sum + (platform.followers || 0), 0) || 0;
-  const totalMonthlyListeners = streamingPlatforms?.reduce((sum, platform) => sum + (platform.listeners || 0), 0) || 0;
-  const totalStreams = streamingPlatforms?.reduce((sum, platform) => sum + (platform.totalStreams || 0), 0) || 0;
-  const totalRevenue = streamingPlatforms?.reduce((sum, platform) => sum + (platform.revenue || 0), 0) || 0;
+  // Calculate total stats across platforms with enhanced null safety checks
+  const totalFollowers = socialMedia?.reduce((sum, platform) => 
+    sum + (platform && typeof platform.followers === 'number' ? platform.followers : 0), 0) || 0;
   
-  // Find current career level info
-  const currentLevelInfo = CAREER_LEVELS.find(level => level.level === stats.careerLevel) || CAREER_LEVELS[0];
-  const nextLevelInfo = CAREER_LEVELS.find(level => level.level === stats.careerLevel + 1);
+  const totalMonthlyListeners = streamingPlatforms?.reduce((sum, platform) => 
+    sum + (platform && typeof platform.listeners === 'number' ? platform.listeners : 0), 0) || 0;
+  
+  const totalStreams = streamingPlatforms?.reduce((sum, platform) => 
+    sum + (platform && typeof platform.totalStreams === 'number' ? platform.totalStreams : 0), 0) || 0;
+  
+  const totalRevenue = streamingPlatforms?.reduce((sum, platform) => 
+    sum + (platform && typeof platform.revenue === 'number' ? platform.revenue : 0), 0) || 0;
+  
+  // Find current career level info with defensive coding
+  const careerLevel = stats?.careerLevel || 1;
+  const currentLevelInfo = CAREER_LEVELS.find(level => level.level === careerLevel) || CAREER_LEVELS[0];
+  const nextLevelInfo = CAREER_LEVELS.find(level => level.level === careerLevel + 1);
   
   // Calculate progress to next level
   let levelProgress = 0;
@@ -230,7 +238,7 @@ export function CareerDashboard() {
             </div>
             <div className="mt-1">
               <span className="text-green-400 font-semibold">{currentLevelInfo.name}</span>
-              <span className="text-gray-400 text-sm"> (Level {stats.careerLevel})</span>
+              <span className="text-gray-400 text-sm"> (Level {stats?.careerLevel || 1})</span>
             </div>
           </div>
         </div>
@@ -317,7 +325,7 @@ export function CareerDashboard() {
         
         <MetricsCard
           title="Wealth"
-          value={formatMoney(stats.wealth)}
+          value={formatMoney(stats?.wealth || 0)}
           icon={<DollarIcon size={20} />}
           trend={{ value: 5, direction: 'up' }}
         />

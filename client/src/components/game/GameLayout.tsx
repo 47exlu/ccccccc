@@ -109,24 +109,25 @@ export function GameLayout({ children }: GameLayoutProps) {
         {showNavbar && <ModernNavbar key="navbar" />}
       </AnimatePresence>
       
-      {/* Energy Display - only shown on the career dashboard (main menu) */}
+      {/* Energy Display - moved to the top right near settings */}
       <AnimatePresence>
         {screen === 'career_dashboard' && (
           <motion.div 
-            className="fixed top-2 left-1/2 transform -translate-x-1/2 z-40"
+            className="fixed top-3 left-4 z-40 flex items-center"
             initial={{ y: -30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -30, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
           >
-            <EnergyDisplay className="w-48" />
+            <EnergyDisplay className="w-36" />
           </motion.div>
         )}
       </AnimatePresence>
       
+      {/* Controls panel - moved to a more subtle location */}
       <motion.div 
-        className="fixed top-4 right-4 z-50 flex gap-2"
-        initial={{ opacity: 0, y: -10 }}
+        className="fixed bottom-4 right-4 z-50 flex items-center gap-2 bg-gray-900/70 backdrop-blur-md rounded-full p-1.5 border border-gray-800 shadow-lg"
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.5 }}
       >
@@ -134,12 +135,12 @@ export function GameLayout({ children }: GameLayoutProps) {
         <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
           <DialogTrigger asChild>
             <motion.button 
-              className="w-10 h-10 rounded-full bg-gray-800/80 hover:bg-gray-700 flex items-center justify-center transition-colors"
+              className="w-8 h-8 rounded-full bg-gray-800 hover:bg-gray-700 flex items-center justify-center transition-colors"
               whileHover={buttonVariants.hover}
               whileTap={buttonVariants.tap}
               title="Settings"
             >
-              <Settings className="w-5 h-5 text-white" />
+              <Settings className="w-4 h-4 text-gray-200" />
             </motion.button>
           </DialogTrigger>
           <DialogContent className="bg-gray-900 border border-gray-700 text-white max-w-[90vw] md:max-w-md">
@@ -197,7 +198,7 @@ export function GameLayout({ children }: GameLayoutProps) {
         
         {/* Sound toggle button */}
         <motion.button 
-          className="w-10 h-10 rounded-full bg-gray-800/80 hover:bg-gray-700 flex items-center justify-center transition-colors"
+          className="w-8 h-8 rounded-full bg-gray-800 hover:bg-gray-700 flex items-center justify-center transition-colors"
           onClick={toggleMute}
           whileHover={buttonVariants.hover}
           whileTap={buttonVariants.tap}
@@ -212,7 +213,7 @@ export function GameLayout({ children }: GameLayoutProps) {
                 exit={{ rotate: 30, opacity: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <VolumeX className="w-5 h-5 text-white" />
+                <VolumeX className="w-4 h-4 text-gray-200" />
               </motion.div>
             ) : (
               <motion.div
@@ -222,7 +223,7 @@ export function GameLayout({ children }: GameLayoutProps) {
                 exit={{ scale: 0.8, opacity: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <Volume className="w-5 h-5 text-white" />
+                <Volume className="w-4 h-4 text-gray-200" />
               </motion.div>
             )}
           </AnimatePresence>
