@@ -1231,19 +1231,22 @@ export const useRapperGame = create<RapperGameStore>()(
       const updatedPlatformStreams: Record<string, number> = {};
       
       // First, calculate the new streams that were added to each platform from albums
-      updatedState.albums.forEach(album => {
-        if (album.platformStreams && album.released) {
-          // For each platform, add its streams to the platform total
-          Object.entries(album.platformStreams).forEach(([platformName, streams]) => {
-            // Initialize if not exists
-            if (!updatedPlatformStreams[platformName]) {
-              updatedPlatformStreams[platformName] = 0;
-            }
-            // Add this album's streams to the platform total
-            updatedPlatformStreams[platformName] += streams;
-          });
-        }
-      });
+      // Add null check for updatedState.albums
+      if (updatedState.albums) {
+        updatedState.albums.forEach(album => {
+          if (album.platformStreams && album.released) {
+            // For each platform, add its streams to the platform total
+            Object.entries(album.platformStreams).forEach(([platformName, streams]) => {
+              // Initialize if not exists
+              if (!updatedPlatformStreams[platformName]) {
+                updatedPlatformStreams[platformName] = 0;
+              }
+              // Add this album's streams to the platform total
+              updatedPlatformStreams[platformName] += streams;
+            });
+          }
+        });
+      }
       
       // Now update the streaming platforms with these totals
       updatedState.streamingPlatforms = updatedState.streamingPlatforms.map(platform => {
@@ -1465,10 +1468,10 @@ export const useRapperGame = create<RapperGameStore>()(
       }
       
       // Update views for music videos based on song performance
-      if (updatedState.musicVideos && updatedState.musicVideos.length > 0) {
+      if (updatedState.musicVideos && updatedState.musicVideos.length > 0 && updatedState.songs) {
         updatedState.musicVideos = updatedState.musicVideos.map(video => {
           // Find the corresponding song for this video
-          const song = updatedState.songs.find(s => s.id === video.songId);
+          const song = updatedState.songs?.find(s => s.id === video.songId);
           
           if (song && song.isActive) {
             // Base view growth depends on song streams and viral status
@@ -1518,23 +1521,25 @@ export const useRapperGame = create<RapperGameStore>()(
         });
         
         // Update total views on video platforms and calculate revenue
-        updatedState.videosPlatforms = updatedState.videosPlatforms.map(platform => {
-          // Sum all views for this platform
-          const platformVideos = updatedState.musicVideos.filter(v => v.platform === platform.name);
-          const totalViews = platformVideos.reduce((sum, video) => sum + video.views, 0);
-          
-          // Calculate revenue from views (using standard CPM rates)
-          // YouTube: $0.0012 per view (or $1.20 per 1000 views)
-          // VEVO: $0.0018 per view (or $1.80 per 1000 views)
-          const revenueRate = platform.name === "VEVO" ? 0.0018 : 0.0012;
-          const calculatedRevenue = Math.floor(totalViews * revenueRate);
-          
-          return {
-            ...platform,
-            totalViews: totalViews,
-            revenue: calculatedRevenue
-          };
-        });
+        if (updatedState.videosPlatforms && updatedState.musicVideos) {
+          updatedState.videosPlatforms = updatedState.videosPlatforms.map(platform => {
+            // Sum all views for this platform
+            const platformVideos = updatedState.musicVideos?.filter(v => v.platform === platform.name) || [];
+            const totalViews = platformVideos.reduce((sum, video) => sum + video.views, 0);
+            
+            // Calculate revenue from views (using standard CPM rates)
+            // YouTube: $0.0012 per view (or $1.20 per 1000 views)
+            // VEVO: $0.0018 per view (or $1.80 per 1000 views)
+            const revenueRate = platform.name === "VEVO" ? 0.0018 : 0.0012;
+            const calculatedRevenue = Math.floor(totalViews * revenueRate);
+            
+            return {
+              ...platform,
+              totalViews: totalViews,
+              revenue: calculatedRevenue
+            };
+          });
+        }
       }
       
       // Process scheduled concerts for this week
