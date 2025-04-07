@@ -6,6 +6,7 @@ import { Switch } from '../ui/switch';
 import { Label } from '../ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
 import EnergyDisplay from './EnergyDisplay';
+import { ModernNavbar } from './ModernNavbar';
 
 interface GameLayoutProps {
   children: React.ReactNode;
@@ -63,9 +64,14 @@ export function GameLayout({ children }: GameLayoutProps) {
     };
   }, []);
 
+  // Don't show navbar on main menu or character creation
+  const showNavbar = screen !== 'main_menu' && screen !== 'character_creation';
+
   return (
     <div className="w-full h-full bg-black text-white">
-    
+      {/* Modern Navigation Bar */}
+      {showNavbar && <ModernNavbar />}
+      
       {/* Energy Display - only shown on the career dashboard (main menu) */}
       {screen === 'career_dashboard' && (
         <div className="fixed top-2 left-1/2 transform -translate-x-1/2 z-40">

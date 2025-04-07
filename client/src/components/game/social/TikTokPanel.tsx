@@ -1364,9 +1364,10 @@ const TikTokPanel: React.FC = () => {
     setIsCreateVideoOpen(false);
   };
 
-  // Go back to dashboard
+  // Go back to dashboard or social media hub
   const handleBackToDashboard = () => {
-    useRapperGame.setState({ screen: 'career_dashboard' });
+    // Navigate to social media hub instead of career dashboard
+    useRapperGame.setState({ screen: 'social_media_hub' });
   };
   
   // Render appropriate header based on active tab

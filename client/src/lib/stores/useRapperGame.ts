@@ -2753,25 +2753,30 @@ export const useRapperGame = create<RapperGameStore>()(
     
     releaseAlbum: (albumId) => {
       const currentState = get();
-      const { albums, currentWeek, streamingPlatforms } = currentState;
+      const { albums, currentWeek, streamingPlatforms, songs } = currentState;
       
-      if (!albums) return;
+      // Simplified album release function to fix bugs
       
       // Find the album to release
-      const albumToRelease = albums.find(album => album.id === albumId);
-      if (!albumToRelease) return;
+      const albumToRelease = albums?.find(album => album.id === albumId);
+      if (!albumToRelease) {
+        console.error("Album not found:", albumId);
+        alert("Error: Album not found");
+        return;
+      }
       
       try {
         console.log("Releasing album:", albumToRelease.title);
         
-        // Calculate average song quality - moved outside of the map function so it can be used later
-        const albumSongs = currentState.songs.filter(song => 
+        // Get all songs in the album
+        const albumSongs = songs.filter(song => 
           albumToRelease.songIds.includes(song.id)
         );
         
         if (albumSongs.length === 0) {
           console.error("Album has no songs:", albumToRelease);
-          return; // Prevent releasing empty albums
+          alert("Cannot release an album with no songs!");
+          return;
         }
         
         // Calculate average quality from the songs
@@ -2780,190 +2785,82 @@ export const useRapperGame = create<RapperGameStore>()(
           ? songQualities.reduce((sum, quality) => sum + quality, 0) / songQualities.length
           : 50;
         
-        console.log("Album average song quality:", avgSongQuality);
+        // Calculate initial streams - simplified formula
+        const baseStreams = 10000 + Math.floor(avgSongQuality * 100);
         
-        // Calculate initial streams based on artist reputation and song quality
-        const reputationFactor = currentState.stats.reputation / 100; // 0-1 based on reputation
-        const qualityFactor = avgSongQuality / 100; // 0-1 based on quality
-        const songCountFactor = Math.min(1, albumToRelease.songIds.length / 10); // 0-1 based on song count (max at 10 songs)
-        
-        // Calculate base streams (more songs, higher quality, better reputation = more streams)
-        // Using a reasonable starting value to prevent album streams from becoming too large later
-        const baseStreams = Math.floor(
-          10000 * reputationFactor * qualityFactor * (0.7 + songCountFactor)
-        );
-        
-        // Cap initial streams to a sensible maximum
-        const cappedBaseStreams = Math.min(20000, baseStreams);
-        
-        console.log("Album initial streams:", cappedBaseStreams);
-        
-        // Platform market share similar to what's used in releaseSong
-        const platformMarketShare = {
-          'Spotify': 0.55,            // Highest - Spotify is always #1 (55%)
-          'YouTube Music': 0.28,      // Second highest - YT Music always #2 (28%)
-          'iTunes': 0.12,             // Third place - iTunes always #3 (12%)  
-          'SoundCloud': 0.05,         // Lowest - SoundCloud always last (5%)
-          'Amazon Music': 0.10,       // Medium tier platform (10%)
-          'Deezer': 0.03,             // Minor platform (3%)
-          'Tidal': 0.02,              // Minor platform (2%)
-          'Other': 0.08,              // All others combined (8%)
-        };
-        
-        // Define streaming platforms to release on - use all available/unlocked platforms
-        const availablePlatforms = streamingPlatforms
-          .filter(platform => platform.isUnlocked)
-          .map(platform => platform.name);
-        
-        // Create platform-specific stream distribution
+        // Create platform distribution (simplified)
         const platformStreamsDistribution: Record<string, number> = {};
         
-        // Distribute initial streams across platforms based on market share using cappedBaseStreams
-        availablePlatforms.forEach(platformName => {
-          const marketShare = platformMarketShare[platformName as keyof typeof platformMarketShare] || 0.05;
-          const platformStreams = Math.floor(cappedBaseStreams * marketShare * (0.9 + Math.random() * 0.2));
-          platformStreamsDistribution[platformName] = platformStreams;
+        // Get all available platforms
+        const availablePlatforms = streamingPlatforms.filter(p => p.isUnlocked);
+        
+        // Simple distribution across platforms
+        availablePlatforms.forEach(platform => {
+          platformStreamsDistribution[platform.name] = Math.floor(baseStreams / availablePlatforms.length);
         });
         
-        // Verify that platformStreamsDistribution contains valid data
-        console.log("Platform streams distribution for new album:", platformStreamsDistribution);
-        
-        // Ensure platformStreamsDistribution is not empty
+        // If no platforms are available, use a default
         if (Object.keys(platformStreamsDistribution).length === 0) {
-          console.error("Warning: platformStreamsDistribution is empty. Generating backup values.");
-          
-          // Generate backup distribution if empty
-          availablePlatforms.forEach(platformName => {
-            const marketShare = platformMarketShare[platformName as keyof typeof platformMarketShare] || 0.05;
-            const platformStreams = Math.floor(cappedBaseStreams * marketShare * (0.9 + Math.random() * 0.2));
-            platformStreamsDistribution[platformName] = platformStreams;
-          });
+          platformStreamsDistribution["Spotify"] = baseStreams;
         }
         
-        // Verify total streams matches platform streams
-        const totalPlatformStreams = Object.values(platformStreamsDistribution).reduce((sum, val) => sum + val, 0);
-        console.log("Total base streams:", baseStreams);
-        console.log("Total platform streams:", totalPlatformStreams);
-        
-        // If there's a significant discrepancy, adjust platform streams
-        if (Math.abs(baseStreams - totalPlatformStreams) > 1000) {
-          console.log("Adjusting platform stream distribution to match total streams");
-          // Normalize platform streams to match base streams
-          const multiplier = baseStreams / (totalPlatformStreams || 1); // Avoid division by zero
-          Object.keys(platformStreamsDistribution).forEach(platform => {
-            platformStreamsDistribution[platform] = Math.floor(platformStreamsDistribution[platform] * multiplier);
-          });
-        }
-        
-        // Update the songs in the album to include initial streams
-        const updatedSongs = currentState.songs.map(song => {
+        // Update songs - mark them as released and active
+        const updatedSongs = songs.map(song => {
           if (albumToRelease.songIds.includes(song.id)) {
-            // Calculate song's share of the album streams based on song quality
-            const songQuality = typeof song.quality === 'number' ? song.quality : 50;
-            // Higher quality songs get more of the initial streams
-            const qualityFactor = songQuality / avgSongQuality;
-            
-            // Each song gets a portion of streams based on quality factor and position
-            // Calculate position factor - songs at the start of the album get more streams
-            const songIndex = albumToRelease.songIds.findIndex(id => id === song.id);
-            const positionFactor = Math.max(0.5, 1 - (songIndex / (albumToRelease.songIds.length * 2)));
-            
-            // Calculate streams for this song (quality affects stream allocation) - use cappedBaseStreams
-            const songStreams = Math.floor((cappedBaseStreams / albumToRelease.songIds.length) * qualityFactor * positionFactor);
-            
-            // Update song with initial streams
             return {
               ...song,
-              streams: (song.streams || 0) + songStreams,
-              isActive: true // Mark the song as active
+              released: true,
+              isActive: true,
+              streams: (song.streams || 0) + Math.floor(baseStreams / albumSongs.length)
             };
           }
           return song;
         });
         
-        // Update the album's release status with initial streams
+        // Update the album
         const updatedAlbums = albums.map(album => {
           if (album.id === albumId) {
-            // Generate ratings based on song quality and artist reputation
-            const criticalRating = Math.min(10, Math.max(1, Math.floor(avgSongQuality / 10)));
-            console.log("Album critical rating:", criticalRating);
-            
-            const fanBaseLoyalty = currentState.stats.fanLoyalty / 10;
-            const fanRating = Math.min(10, Math.max(1, Math.floor(avgSongQuality / 12 + fanBaseLoyalty)));
-            console.log("Album fan rating:", fanRating);
-            
-            // Log the platform streams being set
-            console.log("Setting album platformStreams:", platformStreamsDistribution);
-            
             return {
               ...album,
               released: true,
               releaseDate: currentWeek,
-              criticalRating: criticalRating,  // Explicit assignment to avoid undefined
-              fanRating: fanRating,            // Explicit assignment to avoid undefined
-              streams: cappedBaseStreams || 0,       // Ensure we always have a number and use the capped value
-              sales: Math.floor((cappedBaseStreams || 0) * 0.02), // About 2% of streams convert to sales
-              revenue: calculateStreamingRevenue(cappedBaseStreams || 0),
-              platformStreams: {...platformStreamsDistribution}, // Add platform-specific streams with clone to avoid reference issues
-              chartPosition: Math.floor(Math.random() * 40) + 60 // Start at a lower position (60-100)
+              criticalRating: Math.floor(avgSongQuality / 10),
+              fanRating: Math.floor(avgSongQuality / 12 + 2),
+              streams: baseStreams,
+              sales: Math.floor(baseStreams * 0.02),
+              revenue: baseStreams * 0.004, // Approximate revenue
+              platformStreams: {...platformStreamsDistribution},
+              chartPosition: 90 - Math.floor(avgSongQuality / 2) // Higher quality = better position
             };
           }
           return album;
         });
-      
-        // Update streaming platforms with the album
-        const updatedStreamingPlatforms = [...currentState.streamingPlatforms];
         
-        // Get all available unlocked platforms
-        const availablePlatformsNames = streamingPlatforms
-          .filter(platform => platform.isUnlocked)
-          .map(platform => platform.name);
-          
-        // Register the album on each platform and distribute streams using the same platformMarketShare from above
-        availablePlatformsNames.forEach(platformName => {
-          const platformIndex = updatedStreamingPlatforms.findIndex(p => p.name === platformName);
-          if (platformIndex !== -1) {
-            console.log(`Album "${albumToRelease.title}" registered on ${platformName}`);
-            
-            // Get the platform
-            const platform = updatedStreamingPlatforms[platformIndex];
-            const songCount = albumToRelease.songIds.length;
-            
-            // Distribute streams based on market share - use cappedBaseStreams instead of baseStreams
-            const marketShare = platformMarketShare[platformName as keyof typeof platformMarketShare] || 0.05;
-            const platformStreams = Math.floor(cappedBaseStreams * marketShare * (0.9 + Math.random() * 0.2));
-            
-            // Album release gives a bonus to listeners
-            const albumQualityBoost = avgSongQuality / 100; // 0.5-1.0 based on quality
-            const songCountBoost = Math.min(0.3, songCount * 0.03); // Up to 30% for 10+ songs
-            
-            // Calculate boost percentage (5-50% based on album quality and song count)
-            const listenerBoostPercentage = 0.05 + albumQualityBoost + songCountBoost;
-            const boostedListeners = Math.floor(platform.listeners * (1 + listenerBoostPercentage));
-            
-            // Calculate revenue from streams
-            const platformRevenue = calculateStreamingRevenue(platformStreams, platformName);
-            
-            // Update the platform with the new listener count, streams, and revenue
-            updatedStreamingPlatforms[platformIndex] = {
-              ...platform,
-              listeners: boostedListeners,
-              totalStreams: platform.totalStreams + platformStreams,
-              revenue: platform.revenue + platformRevenue
-            };
-          }
+        // Update streaming platforms with simplified logic
+        const updatedStreamingPlatforms = streamingPlatforms.map(platform => {
+          const platformStreams = platformStreamsDistribution[platform.name] || 0;
+          return {
+            ...platform,
+            totalStreams: platform.totalStreams + platformStreams,
+            listeners: platform.listeners + 1000, // Simple boost
+            revenue: platform.revenue + (platformStreams * 0.004)
+          };
         });
         
-        // Alert the user that the album has been released
-        alert(`Your album "${albumToRelease.title}" has been released!`);
+        console.log("Successfully prepared album release. Updating state...");
         
+        // Update state with all changes
         set({ 
           albums: updatedAlbums,
-          songs: updatedSongs, // Add the updated songs with initial streams
+          songs: updatedSongs,
           streamingPlatforms: updatedStreamingPlatforms
         });
+        
+        alert(`Your album "${albumToRelease.title}" has been released!`);
+        
       } catch (error) {
         console.error("Error releasing album:", error);
+        alert("There was an error releasing your album. Please try again.");
       }
     },
     

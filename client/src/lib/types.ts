@@ -5,6 +5,7 @@ export type GameScreen =
   | "career_dashboard" 
   | "studio" 
   | "social_media" 
+  | "social_media_hub" // Social media hub screen
   | "streaming" 
   | "music_videos"
   | "beefs" // New screen for beefs

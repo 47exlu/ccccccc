@@ -1111,9 +1111,10 @@ const InstagramPanel: React.FC = () => {
     setIsCreatePostOpen(false);
   };
 
-  // Go back to dashboard
+  // Go back to dashboard or social media hub
   const handleBackToDashboard = () => {
-    useRapperGame.setState({ screen: 'career_dashboard' });
+    // Navigate to social media hub instead of career dashboard
+    useRapperGame.setState({ screen: 'social_media_hub' });
   };
   
   // Actions for posts with enhanced functionality
@@ -1344,7 +1345,7 @@ const InstagramPanel: React.FC = () => {
           onClick={handleBackToDashboard}
         >
           <ArrowLeft className="h-5 w-5" />
-          <span className="hidden sm:inline font-medium">Back to Dashboard</span>
+          <span className="hidden sm:inline font-medium">Back to Social Media</span>
         </Button>
         <div className="text-xl font-semibold text-black dark:text-white">
           Instagram

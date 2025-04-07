@@ -19,12 +19,34 @@ export const SocialMediaHeader: React.FC<SocialMediaHeaderProps> = ({
   onBackToDashboard,
   additionalIcons
 }) => {
+  // The function to go back to the main dashboard
+  const handleBackClick = () => {
+    console.log("Going back to dashboard");
+    try {
+      // Call the callback function
+      onBackToDashboard();
+    } catch (error) {
+      console.error("Error navigating back:", error);
+      
+      // Fallback: Try to use the useRapperGame's setScreen directly
+      try {
+        const useRapperGame = require('@/lib/stores/useRapperGame').useRapperGame;
+        useRapperGame.getState().setScreen('career_dashboard');
+      } catch (fallbackError) {
+        console.error("Failed to navigate with fallback:", fallbackError);
+        
+        // Last resort: Alert the user
+        alert("Could not navigate back. Please use the main menu.");
+      }
+    }
+  };
+
   return (
     <div className={`border-b ${platformColor === 'black' ? 'border-gray-800' : 'border-gray-200'} px-4 py-3 flex items-center sticky top-0 z-10 ${platformColor === 'black' ? 'bg-black text-white' : platformColor === 'gradient' ? 'bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 text-white' : 'bg-white text-black'}`}>
       <Button 
         variant="ghost" 
         size="icon" 
-        onClick={onBackToDashboard}
+        onClick={handleBackClick}
         className={`mr-2 ${platformColor === 'black' || platformColor === 'gradient' ? 'text-white hover:bg-white/10' : 'text-black hover:bg-black/10'}`}
       >
         <ArrowLeft className="h-5 w-5" />

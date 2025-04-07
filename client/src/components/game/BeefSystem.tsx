@@ -466,30 +466,40 @@ export function BeefSystem() {
 
   // Start a new beef with rapper
   const handleStartBeef = (rapperId: string) => {
-    // This would be implemented in the game store
     console.log(`Starting beef with rapper ${rapperId}`);
     setShowStartBeefDialog(false);
+
+    if (!useRapperGame.getState().startBeef) {
+      console.error("startBeef function not available in game store");
+      alert("The beef system is currently unavailable. Please try again later.");
+      return;
+    }
     
-    // For demo, just add a new beef to the list
-    const newBeef: Beef = {
-      id: `beef-${Date.now()}`,
-      initiatorId: character?.id || "player-1",
-      targetId: rapperId,
-      status: "waiting",
-      startWeek: currentWeek,
-      publicReaction: {
-        initiatorFavor: 50,
-        targetFavor: 50
-      },
-      impact: {
-        initiatorRepGain: 0,
-        targetRepGain: 0,
-        initiatorFollowerGain: 0,
-        targetFollowerGain: 0
+    try {
+      // Call the actual startBeef function from the game store
+      const beefId = useRapperGame.getState().startBeef(
+        rapperId, 
+        `Diss on ${selectedRapper?.name || "Rapper"}`, 
+        `Here's my diss track for ${selectedRapper?.name || "you"}\nI'm the best in the game, and you know it's true`
+      );
+
+      console.log("Started beef with ID:", beefId);
+
+      if (!beefId) {
+        alert("Couldn't start the beef. Try again later.");
+      } else {
+        alert(`You started a beef with ${selectedRapper?.name || "the rapper"}! Your diss track has been released.`);
       }
-    };
+    } catch (error) {
+      console.error("Error starting beef:", error);
+      alert("There was an error starting the beef. Please try again.");
+    }
     
-    setBeefs([...beefs, newBeef]);
+    // This line was using a mock beef variable that no longer exists
+    // Will use the real beef from the game state
+    // Refresh beefs from the game state
+    const updatedBeefs = useRapperGame.getState().beefs || [];
+    setBeefs(updatedBeefs);
   };
   
   // Filter active beefs that involve the player
