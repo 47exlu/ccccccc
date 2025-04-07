@@ -1,0 +1,29 @@
+Platform iTunes: Market 0.12, Bias 1.29, Random -0.47, Streams 10
+Song registered on Spotify, waiting for week advance for streams
+Song registered on iTunes, waiting for week advance for streams
+Song "Diamonds in the Dark" - Current streams: 0, Growth: 211, Tier: 2, Performance: normal
+Song Diamonds in the Dark: Platform Spotify growth: 158 (bias: 1.06, variation: 1.29, perf: 1.00)
+Song Diamonds in the Dark: Platform iTunes growth: 27 (bias: 1.32, variation: 0.82, perf: 1.00)
+Platform Spotify - New streams: -1, Revenue generated: $-1.00
+Platform SoundCloud - New streams: 0, Revenue generated: $0.00
+Platform iTunes - New streams: -5, Revenue generated: $-1.00
+Platform YouTube Music - New streams: 0, Revenue generated: $0.00
+Platform YouTube - New streams: 0, Revenue generated: $0.00
+Platform YouTube Vevo - New streams: 0, Revenue generated: $0.00
+Total weekly revenue: $-2.00
+Song "Diamonds in the Dark" - Current streams: 211, Growth: 341, Tier: 2, Performance: normal
+Song Diamonds in the Dark: Platform Spotify growth: 204 (bias: 1.06, variation: 1.03, perf: 1.00)
+Song Diamonds in the Dark: Platform iTunes growth: 69 (bias: 1.32, variation: 1.25, perf: 1.00)
+Platform Spotify - New streams: 0, Revenue generated: $0.00
+Platform SoundCloud - New streams: 0, Revenue generated: $0.00
+Platform iTunes - New streams: 0, Revenue generated: $0.00
+Platform YouTube Music - New streams: 0, Revenue generated: $0.00
+Platform YouTube - New streams: 0, Revenue generated: $0.00
+Platform YouTube Vevo - New streams: 0, Revenue generated: $0.00
+Total weekly revenue: $0.00
+Song "Diamonds in the Dark" - Current streams: 552, Growth: 126, Tier: 2, Performance: normal
+Song Diamonds in the Dark: Platform Spotify growth: 53 (bias: 1.06, variation: 0.72, perf: 1.00)
+Song Diamonds in the Dark: Platform iTunes growth: 19 (bias: 1.32, variation: 0.97, perf: 1.00)
+Platform Spotify - New streams: 0, Revenue generated: $0.00
+Platform SoundCloud - New streams: 0, Revenue generated: $0.00
+Platform iTunes - New streams: 0, Revenue generat

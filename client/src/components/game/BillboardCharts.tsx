@@ -396,7 +396,7 @@ const BillboardCharts: React.FC = () => {
                   <div className="flex-grow min-w-0 mr-1">
                     <div className="font-medium text-xs sm:text-base leading-tight truncate">{entry.title}</div>
                     <div className="text-[10px] sm:text-sm text-gray-500 flex items-center">
-                      <span className="truncate max-w-[120px] sm:max-w-[200px] inline-block">{entry.artist}</span>
+                      <span className="truncate max-w-[180px] sm:max-w-[300px] inline-block">{entry.artist}</span>
                       {entry.isPlayer && (
                         <Badge variant="outline" className="ml-1 text-[8px] sm:text-[10px] py-0 h-4 sm:h-auto">You</Badge>
                       )}
@@ -455,7 +455,7 @@ const BillboardCharts: React.FC = () => {
                   <div className="flex-grow min-w-0 mr-1">
                     <div className="font-medium text-xs sm:text-base leading-tight truncate">{entry.title}</div>
                     <div className="text-[10px] sm:text-sm text-gray-500 flex items-center">
-                      <span className="truncate max-w-[120px] sm:max-w-[200px] inline-block">{entry.artist}</span>
+                      <span className="truncate max-w-[180px] sm:max-w-[300px] inline-block">{entry.artist}</span>
                       {entry.isPlayer && (
                         <Badge variant="outline" className="ml-1 text-[8px] sm:text-[10px] py-0 h-4 sm:h-auto">You</Badge>
                       )}
@@ -509,17 +509,32 @@ const BillboardCharts: React.FC = () => {
                     {/* Artist information with improved mobile layout */}
                     <div className="flex-grow min-w-0">
                       <div className="font-bold text-[11px] sm:text-lg flex items-center flex-wrap leading-tight">
-                        <span className="truncate max-w-[120px] sm:max-w-[250px] mr-1 inline-block">{artist.name}</span>
+                        <span className="truncate max-w-[180px] sm:max-w-[350px] mr-1 inline-block">{artist.name}</span>
                         {artist.isPlayer && (
                           <Badge variant="outline" className="text-[8px] sm:text-xs py-0 h-4 sm:h-5">You</Badge>
                         )}
                       </div>
                       <div className="text-[10px] sm:text-sm flex items-center gap-1 flex-wrap leading-tight">
                         <span className="truncate inline-block">Listeners: {artist.score.toLocaleString()}</span>
-                        <span className="flex items-center">
-                          {artist.trend === 'up' && <TrendingUp className="text-green-500 h-2.5 w-2.5 sm:h-4 sm:w-4" />}
-                          {artist.trend === 'down' && <ArrowDown className="text-red-500 h-2.5 w-2.5 sm:h-4 sm:w-4" />}
-                          {artist.trend === 'same' && <Minus className="text-gray-400 h-2.5 w-2.5 sm:h-4 sm:w-4" />}
+                        <span className="flex items-center gap-1">
+                          {artist.trend === 'up' && (
+                            <>
+                              <TrendingUp className="text-green-500 h-2.5 w-2.5 sm:h-4 sm:w-4" />
+                              <span className="text-green-500 text-[8px] sm:text-xs">Viral</span>
+                            </>
+                          )}
+                          {artist.trend === 'down' && (
+                            <>
+                              <ArrowDown className="text-red-500 h-2.5 w-2.5 sm:h-4 sm:w-4" />
+                              <span className="text-red-500 text-[8px] sm:text-xs">Flopping</span>
+                            </>
+                          )}
+                          {artist.trend === 'same' && (
+                            <>
+                              <Minus className="text-gray-400 h-2.5 w-2.5 sm:h-4 sm:w-4" />
+                              <span className="text-gray-400 text-[8px] sm:text-xs">Stable</span>
+                            </>
+                          )}
                         </span>
                       </div>
                     </div>
