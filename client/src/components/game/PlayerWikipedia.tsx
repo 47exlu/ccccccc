@@ -224,7 +224,7 @@ export function PlayerWikipedia() {
                       <strong className="text-white">Most Popular Album:</strong>{" "}
                       {mostSuccessfulAlbum ? (
                         <span className="text-gray-300">
-                          "{mostSuccessfulAlbum.title}" ({mostSuccessfulAlbum.songs?.length || 0} tracks)
+                          "{mostSuccessfulAlbum.title}" ({mostSuccessfulAlbum.songIds?.length || 0} tracks)
                         </span>
                       ) : (
                         <span className="text-gray-500">No albums released yet</span>
@@ -347,7 +347,7 @@ export function PlayerWikipedia() {
                       <div className="p-3">
                         <h3 className="font-bold">{album.title}</h3>
                         <div className="text-xs text-gray-400 mt-1">Released on Week {album.releaseDate}</div>
-                        <div className="text-xs text-gray-400">{album.songs?.length || 0} tracks</div>
+                        <div className="text-xs text-gray-400">{album.songIds?.length || 0} tracks</div>
                         <div className="text-xs text-purple-400 mt-1">{album.type} Album</div>
                       </div>
                     </div>
