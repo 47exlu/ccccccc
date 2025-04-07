@@ -10,9 +10,22 @@ export function PlayerWikipedia() {
   const [activeTab, setActiveTab] = useState('overview');
 
   // Calculate total career stats
+  // Log songs array to debug
+  console.log('PlayerWikipedia - Songs data:', JSON.stringify(songs?.map(s => ({
+    title: s.title,
+    streams: s.streams,
+    released: s.released
+  })) || []));
+  
   const totalSongs = songs?.filter(song => song.released)?.length || 0;
   const totalAlbums = albums?.filter(album => album.released)?.length || 0;
-  const totalStreams = songs?.reduce((total, song) => total + (song.streams || 0), 0) || 0;
+  const totalStreams = songs?.reduce((total, song) => {
+    // Check if song has streams
+    console.log(`Song "${song?.title}": ${song?.streams || 0} streams, released: ${song?.released}`);
+    return total + (song?.streams || 0);
+  }, 0) || 0;
+  
+  console.log('PlayerWikipedia - Total streams calculated:', totalStreams);
   
   // Calculate total fans/followers across platforms
   const calculateTotalFollowers = () => {
