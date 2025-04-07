@@ -181,6 +181,10 @@ interface RapperGameActions {
   completeMediaEvent: (mediaEventId: string, performanceQuality?: number) => void;
   cancelMediaEvent: (mediaEventId: string) => void;
   completeMediaEventPreparationTask: (mediaEventId: string, taskId: string) => void;
+  
+  // Market trends system
+  generateMarketTrend: () => string;
+  updateTrends: () => void;
 }
 
 // Combine state and actions
