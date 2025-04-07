@@ -6,8 +6,22 @@ import { formatNumber } from '@/lib/utils';
 
 export function PlayerWikipedia() {
   const gameState = useRapperGame();
-  const { character, currentWeek, stats, songs, albums, socialMediaStats, streamingPlatforms } = gameState;
+  // Fix: Destructuring of possibly undefined values with fallbacks
+  const { 
+    character = {}, 
+    currentWeek = 1, 
+    stats = {}, 
+    songs = [], 
+    albums = [], 
+    socialMediaStats = {}, 
+    streamingPlatforms = []
+  } = gameState || {};
   const [activeTab, setActiveTab] = useState('overview');
+  
+  // Debug the gameState
+  console.log('PlayerWikipedia - songs available in store:', 
+    gameState?.songs?.map(s => s.title) || 'No songs');
+  console.log('PlayerWikipedia - songs length:', gameState?.songs?.length || 0);
 
   // Calculate total career stats
   // Log songs array to debug
@@ -98,7 +112,7 @@ export function PlayerWikipedia() {
                 Week {currentWeek} of Career
               </span>
               <span className="px-2 py-1 bg-indigo-900 bg-opacity-60 rounded text-xs border border-indigo-700">
-                ${stats?.wealth?.toLocaleString()} Net Worth
+                ${typeof stats?.wealth === 'number' ? stats.wealth.toLocaleString() : '0'} Net Worth
               </span>
             </div>
           </div>
@@ -159,7 +173,7 @@ export function PlayerWikipedia() {
                   </div>
                   <div className="bg-gray-700 bg-opacity-50 rounded p-3 border border-gray-600">
                     <div className="text-xs text-gray-400">Net Worth</div>
-                    <div className="font-bold text-lg">${stats?.wealth?.toLocaleString() || 0}</div>
+                    <div className="font-bold text-lg">${typeof stats?.wealth === 'number' ? stats.wealth.toLocaleString() : '0'}</div>
                   </div>
                 </div>
               </div>

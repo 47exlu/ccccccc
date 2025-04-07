@@ -1,0 +1,22 @@
+The above error occurred in the <PlayerWikipedia> component:
+
+    at PlayerWikipedia (https://9ab4aa23-a986-45be-94f6-96f8fea66475-00-pn3mr7gkhlzu.janeway.replit.dev/src/components/game/PlayerWikipedia.tsx:25:21)
+    at div
+    at MotionComponent (https://9ab4aa23-a986-45be-94f6-96f8fea66475-00-pn3mr7gkhlzu.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/framer-motion.js?v=65b47ab2:945:40)
+    at main
+    at MotionComponent (https://9ab4aa23-a986-45be-94f6-96f8fea66475-00-pn3mr7gkhlzu.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/framer-motion.js?v=65b47ab2:945:40)
+    at div
+    at MotionComponent (https://9ab4aa23-a986-45be-94f6-96f8fea66475-00-pn3mr7gkhlzu.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/framer-motion.js?v=65b47ab2:945:40)
+    at GameLayout (https://9ab4aa23-a986-45be-94f6-96f8fea66475-00-pn3mr7gkhlzu.janeway.replit.dev/src/components/game/GameLayout.tsx:29:30)
+    at LoadingTransition (https://9ab4aa23-a986-45be-94f6-96f8fea66475-00-pn3mr7gkhlzu.janeway.replit.dev/src/components/ui/loading-transition.tsx:21:37)
+    at Route (https://9ab4aa23-a986-45be-94f6-96f8fea66475-00-pn3mr7gkhlzu.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=65b47ab2:280:16)
+    at Switch (https://9ab4aa23-a986-45be-94f6-96f8fea66475-00-pn3mr7gkhlzu.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=65b47ab2:336:17)
+    at Suspense
+    at CustomToastProvider (https://9ab4aa23-a986-45be-94f6-96f8fea66475-00-pn3mr7gkhlzu.janeway.replit.dev/src/hooks/use-toast.tsx:20:39)
+    at QueryClientProvider (https://9ab4aa23-a986-45be-94f6-96f8fea66475-00-pn3mr7gkhlzu.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=65b47ab2:2882:3)
+    at App (https://9ab4aa23-a986-45be-94f6-96f8fea66475-00-pn3mr7gkhlzu.janeway.replit.dev/src/App.tsx?v=FSEvN_HZ1P4xJ3QHTk3d2:195:38)
+    at CustomToastProvider (https://9ab4aa23-a986-45be-94f6-96f8fea66475-00-pn3mr7gkhlzu.janeway.replit.dev/src/hooks/use-toast.tsx?v=FSEvN_HZ1P4xJ3QHTk3d2:20:39)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+Cannot read properties of undefined (reading 'toString')

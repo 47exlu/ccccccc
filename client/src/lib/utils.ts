@@ -11,14 +11,16 @@ export function cn(...inputs: ClassValue[]) {
 /**
  * Format a number with commas
  */
-export function formatNumber(num: number): string {
+export function formatNumber(num: number | undefined | null): string {
+  if (num === undefined || num === null) return '0';
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 /**
  * Format a number as currency
  */
-export function formatMoney(num: number): string {
+export function formatMoney(num: number | undefined | null): string {
+  if (num === undefined || num === null) return '$0';
   return "$" + formatNumber(Math.floor(num));
 }
 
