@@ -802,8 +802,8 @@ export const useRapperGame = create<RapperGameStore>()(
       // NOW update each platform with guaranteed unique values
       updatedState.streamingPlatforms = currentState.streamingPlatforms.map(platform => {
         // Get the forced unique streams allocated to this platform
-        // Add null check to ensure finalStreamsMap is defined and has the platform
-        const updatedStreams = (finalStreamsMap && finalStreamsMap[platform.name]) || platform.totalStreams;
+        // Ensure finalStreamsMap is defined before accessing it
+        const updatedStreams = (finalStreamsMap?.[platform.name]) || platform.totalStreams;
         
         // For new players, platforms start with small numbers, then accelerate
         // Calculate base monthly listeners from streams with better progression curve
