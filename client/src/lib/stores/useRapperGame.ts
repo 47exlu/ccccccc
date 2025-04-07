@@ -1134,8 +1134,9 @@ export const useRapperGame = create<RapperGameStore>()(
                     const platformVariation = 0.9 + (Math.random() * 0.2);
                     const platformStreams = Math.floor(streamGrowth * marketShare * platformVariation);
                     
-                    // Ensure minimum platform growth to prevent platforms from stalling
-                    const minPlatformGrowth = Math.max(100, Math.floor(streamGrowth * marketShare * 0.5));
+                    // Don't enforce a fixed minimum that would cap growth - instead make sure it's proportional
+                    // Use at least 50% of the potential growth but don't cap the upper end
+                    const minPlatformGrowth = Math.floor(streamGrowth * marketShare * 0.5);
                     
                     // Use the larger of calculated or minimum platform growth
                     platformSpecificStreams[platformName] = Math.max(minPlatformGrowth, platformStreams);
