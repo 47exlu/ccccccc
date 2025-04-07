@@ -3683,17 +3683,70 @@ export const useRapperGame = create<RapperGameStore>()(
       // Apply the effect function to update the state
       const resolvedEvent = {
         ...event,
-        resolved: true
+        resolved: true,
+        selectedOption: optionIndex
       };
       
-      // Apply the effect and update the state
-      const newState = option.effect(currentState);
+      let updatedState = { ...currentState };
+      
+      // Apply the effect if it exists
+      if (option.effect && typeof option.effect === 'function') {
+        updatedState = option.effect(currentState);
+      } 
+      // Apply simple results if no effect function but there are results
+      else if (option.results) {
+        const { results } = option;
+        
+        // Update player stats based on results
+        if (updatedState.stats) {
+          updatedState.stats = {
+            ...updatedState.stats,
+            ...(results.reputation !== undefined && { reputation: Math.max(0, Math.min(100, updatedState.stats.reputation + results.reputation)) }),
+            ...(results.wealth !== undefined && { wealth: updatedState.stats.wealth + results.wealth }),
+            ...(results.creativity !== undefined && { creativity: Math.max(0, Math.min(100, updatedState.stats.creativity + results.creativity)) }),
+            ...(results.marketing !== undefined && { marketing: Math.max(0, Math.min(100, updatedState.stats.marketing + results.marketing)) }),
+            ...(results.networking !== undefined && { networking: Math.max(0, Math.min(100, updatedState.stats.networking + results.networking)) }),
+            ...(results.fanLoyalty !== undefined && { fanLoyalty: Math.max(0, Math.min(100, updatedState.stats.fanLoyalty + results.fanLoyalty)) }),
+          };
+        }
+        
+        // Apply follower changes if specified
+        if (results.followers && updatedState.socialMedia) {
+          updatedState.socialMedia = updatedState.socialMedia.map(platform => {
+            const platformName = platform.name.toLowerCase();
+            const followerChange = results.followers?.[platformName];
+            
+            if (followerChange !== undefined) {
+              return {
+                ...platform,
+                followers: Math.max(0, platform.followers + followerChange)
+              };
+            }
+            
+            return platform;
+          });
+        }
+        
+        // Apply stream changes if specified
+        if (results.streams !== undefined && updatedState.songs.length > 0) {
+          // Apply streams to latest song
+          const latestIndex = updatedState.songs.length - 1;
+          updatedState.songs = [
+            ...updatedState.songs.slice(0, latestIndex),
+            {
+              ...updatedState.songs[latestIndex],
+              streams: Math.max(0, updatedState.songs[latestIndex].streams + results.streams)
+            },
+            ...updatedState.songs.slice(latestIndex + 1)
+          ];
+        }
+      }
       
       // Remove the resolved event from active events and add to resolved events
       const updatedActiveEvents = currentState.activeRandomEvents.filter(e => e.id !== eventId);
       
       set({
-        ...newState,
+        ...updatedState,
         activeRandomEvents: updatedActiveEvents,
         resolvedRandomEvents: [...currentState.resolvedRandomEvents, resolvedEvent]
       });

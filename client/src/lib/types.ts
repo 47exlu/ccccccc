@@ -282,9 +282,10 @@ export interface RandomEvent {
   description: string;
   week: number;
   type: "opportunity" | "challenge" | "neutral" | "fan";
+  requiresStats?: Partial<Record<keyof PlayerStats, number>>;
   options: {
     text: string;
-    results: {
+    results?: {
       reputation?: number;
       wealth?: number;
       creativity?: number;
@@ -295,6 +296,7 @@ export interface RandomEvent {
       streams?: number;
     };
     requiresStats?: Partial<Record<keyof PlayerStats, number>>;
+    effect?: (state: GameState) => GameState;
   }[];
   resolved: boolean;
   selectedOption?: number;

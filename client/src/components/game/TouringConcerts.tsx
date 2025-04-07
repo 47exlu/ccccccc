@@ -4,8 +4,13 @@ import { Button } from '@/components/ui/button';
 import { ProgressBar } from '@/components/ui/progressbar';
 import { useRapperGame } from '@/lib/stores/useRapperGame';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Mic, MapPin, Users, Calendar, DollarSign, ArrowLeft, Check } from 'lucide-react';
+import { 
+  Mic, MapPin, Users, Calendar, DollarSign, ArrowLeft, Check, 
+  Route, Eye, TrendingUp, Award
+} from 'lucide-react';
 import { formatMoney, formatNumber } from '@/lib/utils';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 import {
   Dialog,
   DialogContent,
@@ -39,11 +44,16 @@ interface ExtendedPlayerStats {
 }
 
 export function TouringConcerts() {
-  const { venues, stats, currentWeek, bookVenue, setScreen, pastShows } = useRapperGame() as any;
+  const { venues, stats, currentWeek, bookVenue, setScreen, pastShows, tours } = useRapperGame() as any;
   const wealth = stats?.wealth || 0;
   const [selectedTab, setSelectedTab] = useState('venues');
   const [selectedVenue, setSelectedVenue] = useState<string | null>(null);
   const [showVenueDetails, setShowVenueDetails] = useState(false);
+  
+  // Tour planning state
+  const [tourName, setTourName] = useState('');
+  const [startWeek, setStartWeek] = useState(currentWeek + 1);
+  const [numberOfShows, setNumberOfShows] = useState(3);
 
   // Function to book a venue
   const handleBookVenue = () => {
@@ -65,6 +75,49 @@ export function TouringConcerts() {
     bookVenue(selectedVenue);
     toast.success(`Successfully booked ${venue.name}!`);
     setShowVenueDetails(false);
+  };
+  
+  // Function to create a tour
+  const handleCreateTour = () => {
+    if (!tourName.trim()) {
+      toast.error("Please enter a tour name.");
+      return;
+    }
+    
+    if (startWeek <= currentWeek) {
+      toast.error("Tour must start in the future.");
+      return;
+    }
+    
+    if (numberOfShows < 3) {
+      toast.error("A tour needs at least 3 venues.");
+      return;
+    }
+    
+    // Check if the createTour function exists in the game store
+    if (typeof useRapperGame().createTour !== 'function') {
+      toast.error("Tour planning feature is coming soon.");
+      return;
+    }
+    
+    try {
+      // Call the createTour function from the game store
+      useRapperGame().createTour({
+        name: tourName,
+        startWeek,
+        numberOfVenues: numberOfShows
+      });
+      
+      toast.success("Tour planned successfully! Check Your Tours section for details.");
+      
+      // Reset form
+      setTourName('');
+      setStartWeek(currentWeek + 1);
+      setNumberOfShows(3);
+    } catch (error) {
+      console.error("Error planning tour:", error);
+      toast.error("There was an error planning your tour. Please try again.");
+    }
   };
 
   // Get a venue's capacity utilization based on reputation
@@ -125,6 +178,9 @@ export function TouringConcerts() {
         <TabsList className="bg-teal-950 border border-teal-800 w-full">
           <TabsTrigger value="venues" className="flex-1 data-[state=active]:bg-teal-800">
             Available Venues
+          </TabsTrigger>
+          <TabsTrigger value="tours" className="flex-1 data-[state=active]:bg-teal-800">
+            Plan Tours
           </TabsTrigger>
           <TabsTrigger value="past-shows" className="flex-1 data-[state=active]:bg-teal-800">
             Past Shows
@@ -204,6 +260,194 @@ export function TouringConcerts() {
               </Card>
             ))}
           </div>
+        </TabsContent>
+        
+        {/* Tour Planning Tab */}
+        <TabsContent value="tours" className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="bg-black/30 border-teal-800">
+              <CardHeader>
+                <CardTitle className="text-lg font-medium">Create a Tour</CardTitle>
+                <CardDescription>Organize multiple shows at different venues</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="tourName">Tour Name</Label>
+                    <Input 
+                      id="tourName" 
+                      placeholder="Enter tour name..." 
+                      className="bg-black/20 border-teal-900"
+                      value={tourName}
+                      onChange={(e) => setTourName(e.target.value)}
+                    />
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="startWeek">Start Week</Label>
+                      <Input 
+                        id="startWeek" 
+                        placeholder="Week #" 
+                        className="bg-black/20 border-teal-900"
+                        type="number" 
+                        min={currentWeek + 1}
+                        value={startWeek}
+                        onChange={(e) => setStartWeek(parseInt(e.target.value))}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="numberOfShows">Number of Shows</Label>
+                      <Input 
+                        id="numberOfShows" 
+                        placeholder="3-10 shows" 
+                        className="bg-black/20 border-teal-900"
+                        type="number" 
+                        min={3} 
+                        max={10}
+                        value={numberOfShows}
+                        onChange={(e) => setNumberOfShows(parseInt(e.target.value))}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="pt-2">
+                    <Button 
+                      className="w-full bg-gradient-to-r from-teal-700 to-emerald-600 hover:from-teal-600 hover:to-emerald-500"
+                      onClick={handleCreateTour}
+                    >
+                      <Route className="h-4 w-4 mr-2" />
+                      Plan Tour Route
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card className="bg-black/30 border-teal-800">
+              <CardHeader>
+                <CardTitle className="text-lg font-medium">Tour Benefits</CardTitle>
+                <CardDescription>Why planning a tour is worth it</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex items-start space-x-3 p-3 rounded-md bg-teal-900/20 border border-teal-900/40">
+                    <TrendingUp className="h-5 w-5 text-teal-400 mt-0.5" />
+                    <div>
+                      <h4 className="font-medium mb-1">Increased Efficiency</h4>
+                      <p className="text-sm text-gray-300">
+                        Book multiple venues at once and optimize your travel route for maximum profit
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start space-x-3 p-3 rounded-md bg-teal-900/20 border border-teal-900/40">
+                    <Award className="h-5 w-5 text-teal-400 mt-0.5" />
+                    <div>
+                      <h4 className="font-medium mb-1">Reputation Boost</h4>
+                      <p className="text-sm text-gray-300">
+                        Tours give a larger reputation bonus compared to individual shows
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start space-x-3 p-3 rounded-md bg-teal-900/20 border border-teal-900/40">
+                    <DollarSign className="h-5 w-5 text-teal-400 mt-0.5" />
+                    <div>
+                      <h4 className="font-medium mb-1">Cost Savings</h4>
+                      <p className="text-sm text-gray-300">
+                        Save on setup costs by performing multiple shows in sequence
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+          
+          <Card className="bg-black/30 border-teal-800">
+            <CardHeader>
+              <CardTitle className="text-lg font-medium">Your Tours</CardTitle>
+              <CardDescription>Current and past tours</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {(tours && tours.length > 0) ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {tours.map((tour) => (
+                      <div 
+                        key={tour.id}
+                        className="relative p-4 border border-teal-800/50 bg-black/40 rounded-lg overflow-hidden"
+                      >
+                        <div className={`absolute top-0 right-0 px-2 py-1 text-xs font-medium
+                          ${tour.status === 'active' ? 'bg-green-900 text-green-200' : 
+                           tour.status === 'completed' ? 'bg-blue-900 text-blue-200' :
+                           tour.status === 'planning' ? 'bg-yellow-900 text-yellow-200' : 
+                           'bg-red-900 text-red-200'}
+                        `}>
+                          {tour.status.charAt(0).toUpperCase() + tour.status.slice(1)}
+                        </div>
+                        
+                        <h3 className="font-bold text-xl mb-2">{tour.name}</h3>
+                        
+                        <div className="space-y-2 mb-4">
+                          <div className="flex justify-between text-sm">
+                            <span className="text-gray-400">Weeks:</span>
+                            <span>{tour.startWeek} - {tour.endWeek}</span>
+                          </div>
+                          <div className="flex justify-between text-sm">
+                            <span className="text-gray-400">Venues:</span>
+                            <span>{tour.venues.length}</span>
+                          </div>
+                          <div className="flex justify-between text-sm">
+                            <span className="text-gray-400">Revenue:</span>
+                            <span className="text-teal-300 font-medium">{formatMoney(tour.totalRevenue)}</span>
+                          </div>
+                        </div>
+                        
+                        <div className="flex justify-between mt-4">
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="text-xs border-teal-900/50 hover:bg-teal-900/50"
+                          >
+                            <Eye className="h-3 w-3 mr-1" />
+                            View Details
+                          </Button>
+                          
+                          {tour.status === 'planning' && (
+                            <Button 
+                              size="sm" 
+                              className="text-xs bg-teal-700 hover:bg-teal-600"
+                              onClick={() => {
+                                if (typeof useRapperGame().confirmTour === 'function') {
+                                  useRapperGame().confirmTour(tour.id);
+                                  toast.success("Tour confirmed! It will start in week " + tour.startWeek);
+                                } else {
+                                  toast.error("Tour confirmation feature coming soon");
+                                }
+                              }}
+                            >
+                              <Check className="h-3 w-3 mr-1" />
+                              Confirm
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12 bg-black/20 rounded-lg border border-teal-900/30">
+                    <Route className="h-12 w-12 mx-auto text-teal-700 mb-4" />
+                    <h3 className="text-xl font-medium mb-2">No Tours Planned</h3>
+                    <p className="text-gray-400 max-w-md mx-auto">
+                      Plan a tour to book multiple venues and build your reputation more efficiently.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
         
         {/* Past Shows Tab */}
