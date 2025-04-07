@@ -63,11 +63,11 @@ export function CareerDashboard() {
   
   // Function to handle next week with summary
   const handleNextWeek = () => {
-    // Capture previous stats for comparison
-    const previousWeek = currentWeek;
-    const previousStreams = streamingPlatforms.reduce((sum, platform) => sum + platform.totalStreams, 0);
-    const previousFollowers = socialMedia.reduce((sum, platform) => sum + platform.followers, 0);
-    const previousWealth = stats.wealth;
+    // Capture previous stats for comparison with null safety checks
+    const previousWeek = currentWeek || 0;
+    const previousStreams = streamingPlatforms?.reduce((sum, platform) => sum + (platform.totalStreams || 0), 0) || 0;
+    const previousFollowers = socialMedia?.reduce((sum, platform) => sum + (platform.followers || 0), 0) || 0;
+    const previousWealth = stats?.wealth || 0;
     
     // Open confirmation dialog before advancing week
     setShowWeeklySummary(true);
@@ -86,11 +86,11 @@ export function CareerDashboard() {
   
   // Handle the actual advancement when user confirms
   const confirmAdvanceWeek = () => {
-    // Capture previous stats for comparison
-    const previousWeek = currentWeek;
-    const previousStreams = streamingPlatforms.reduce((sum, platform) => sum + platform.totalStreams, 0);
-    const previousFollowers = socialMedia.reduce((sum, platform) => sum + platform.followers, 0);
-    const previousWealth = stats.wealth;
+    // Capture previous stats for comparison with null safety checks
+    const previousWeek = currentWeek || 0;
+    const previousStreams = streamingPlatforms?.reduce((sum, platform) => sum + (platform.totalStreams || 0), 0) || 0;
+    const previousFollowers = socialMedia?.reduce((sum, platform) => sum + (platform.followers || 0), 0) || 0;
+    const previousWealth = stats?.wealth || 0;
     
     // Advance the week using the store function
     advanceWeek();
@@ -100,12 +100,12 @@ export function CareerDashboard() {
       // Get updated state after advancing the week
       const currentState = useRapperGame.getState();
       
-      // Calculate changes
-      const newStreams = currentState.streamingPlatforms.reduce(
-        (sum, platform) => sum + platform.totalStreams, 0) - previousStreams;
+      // Calculate changes with null safety checks
+      const newStreams = (currentState.streamingPlatforms?.reduce(
+        (sum, platform) => sum + (platform.totalStreams || 0), 0) || 0) - previousStreams;
       
-      const newFollowers = currentState.socialMedia.reduce(
-        (sum, platform) => sum + platform.followers, 0) - previousFollowers;
+      const newFollowers = (currentState.socialMedia?.reduce(
+        (sum, platform) => sum + (platform.followers || 0), 0) || 0) - previousFollowers;
       
       const newWealth = currentState.stats.wealth - previousWealth;
       
@@ -137,11 +137,11 @@ export function CareerDashboard() {
 
   if (!character) return null;
 
-  // Calculate total stats across platforms
-  const totalFollowers = socialMedia.reduce((sum, platform) => sum + platform.followers, 0);
-  const totalMonthlyListeners = streamingPlatforms.reduce((sum, platform) => sum + platform.listeners, 0);
-  const totalStreams = streamingPlatforms.reduce((sum, platform) => sum + platform.totalStreams, 0);
-  const totalRevenue = streamingPlatforms.reduce((sum, platform) => sum + platform.revenue, 0);
+  // Calculate total stats across platforms with null safety checks
+  const totalFollowers = socialMedia?.reduce((sum, platform) => sum + (platform.followers || 0), 0) || 0;
+  const totalMonthlyListeners = streamingPlatforms?.reduce((sum, platform) => sum + (platform.listeners || 0), 0) || 0;
+  const totalStreams = streamingPlatforms?.reduce((sum, platform) => sum + (platform.totalStreams || 0), 0) || 0;
+  const totalRevenue = streamingPlatforms?.reduce((sum, platform) => sum + (platform.revenue || 0), 0) || 0;
   
   // Find current career level info
   const currentLevelInfo = CAREER_LEVELS.find(level => level.level === stats.careerLevel) || CAREER_LEVELS[0];
@@ -226,7 +226,7 @@ export function CareerDashboard() {
             <h1 className="text-3xl font-bold text-amber-400">{character.artistName}</h1>
             <div className="flex items-center text-gray-400 text-sm">
               <CalendarIcon size={16} className="mr-1" />
-              <span>Week {currentWeek} • Age {character.age} • {character.country}</span>
+              <span>Week {currentWeek || 0} • {character.artistName}</span>
             </div>
             <div className="mt-1">
               <span className="text-green-400 font-semibold">{currentLevelInfo.name}</span>
@@ -813,8 +813,8 @@ export function CareerDashboard() {
                         ) : (
                           song.icon === "fire" ? "🔥" : 
                           song.icon === "star" ? "⭐" : 
-                          song.icon === "diamond" ? "💎" : 
-                          song.icon === "crown" ? "👑" : 
+                          (song.icon as string) === "diamond" ? "💎" : 
+                          (song.icon as string) === "crown" ? "👑" : 
                           song.icon === "microphone" ? "🎤" : "🎵"
                         )}
                       </div>
