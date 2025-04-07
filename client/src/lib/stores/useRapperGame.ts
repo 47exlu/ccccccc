@@ -15,6 +15,7 @@ import {
   GameScreen,
   GameState,
   HypeEvent,
+  MarketTrend,
   MediaEvent,
   MerchandiseItem,
   MerchandiseWeeklySales,
@@ -39,7 +40,8 @@ import {
   VenueSize,
   VideosPlatform,
   ViralStatus,
-  WeeklyStats
+  WeeklyStats,
+  TrendType
 } from '../types';
 import { useAudio } from './useAudio';
 import { useEnergyStore } from './useEnergyStore';
@@ -471,10 +473,10 @@ export const useRapperGame = create<RapperGameStore>()(
     // Market Trends System
     generateMarketTrend: () => {
       const currentState = get();
-      // Using v4 as uuidv4 from import at the top of the file
+      const trendId = uuidv4();
       
       // Define possible trend types
-      const trendTypes = ['rising', 'falling', 'hot', 'stable'] as const;
+      const trendTypes: TrendType[] = ['rising', 'falling', 'hot', 'stable'];
       
       // Define possible trend names based on type
       const trendNames = {
@@ -521,86 +523,71 @@ export const useRapperGame = create<RapperGameStore>()(
           'Artists are boycotting platforms due to royalty payment disputes.',
           'New policy changes have reduced song visibility in recommendation engines.',
           'Market saturation in certain genres is decreasing individual stream shares.',
-          'Price increases for premium tiers have reduced subscriber engagement.',
-          'Platform focus shift to podcasts has decreased music prominence.'
+          'Price increases for premium subscriptions are driving users to free tiers with fewer streams.',
+          'Content moderation algorithms are reducing discovery for explicit content.'
         ],
         hot: [
-          'Music featuring in popular podcasts is driving increased streams.',
-          'Artist verification processes are boosting credibility and plays.',
-          'AI-recommended playlists are creating new hit songs seemingly overnight.',
-          'Interactive music experiences are creating deeper fan engagement.',
-          'Livestream performances with integrated streaming links are trending.'
+          'Integration between podcasts and music is creating new promotional opportunities.',
+          'Verification features for artists are increasing trust and engagement with official content.',
+          'AI tools are creating personalized listening experiences that boost streams.',
+          'Cross-platform promotion deals are creating viral momentum across services.',
+          'Interactive music experiences are increasing time spent on platforms.'
         ],
         stable: [
-          'Seasonal listening patterns have established consistent market shares.',
-          'Platform redesign has maintained user engagement without disruption.',
-          'Industry standardization efforts have stabilized cross-platform metrics.',
-          'Premium content features are providing reliable revenue streams.',
-          'Offline listening tools continue to serve markets with limited connectivity.'
+          'Seasonal listening patterns remain predictable, with consistent engagement.',
+          'Platform redesigns have maintained current engagement levels while improving UX.',
+          'Industry standardization efforts are creating more consistent experiences.',
+          'Premium content features are attracting a steady flow of new subscribers.',
+          'Offline listening tools continue to be popular for mobile users.'
         ]
       };
       
-      // List of platforms that could be affected
-      const allPlatforms = [
-        'Spotify',
-        'Apple Music',
-        'YouTube Music',
-        'SoundCloud',
-        'TikTok',
-        'Instagram',
-        'Twitter',
-        'YouTube',
-        'YouTube Vevo'
+      // All available streaming platforms
+      const allPlatforms = currentState.streamingPlatforms?.map(p => p.name) || [
+        "Spotify", "SoundCloud", "iTunes", "YouTube Music", "YouTube", "YouTube Vevo"
       ];
       
       // Randomly select a trend type
-      const trendType = trendTypes[Math.floor(Math.random() * trendTypes.length)];
+      const selectedType = trendTypes[Math.floor(Math.random() * trendTypes.length)];
       
-      // Randomly select name and description based on trend type
-      const nameOptions = trendNames[trendType];
-      const descriptionOptions = trendDescriptions[trendType];
+      // Randomly select a name from the corresponding list
+      const nameOptions = trendNames[selectedType];
+      const selectedName = nameOptions[Math.floor(Math.random() * nameOptions.length)];
       
-      const name = nameOptions[Math.floor(Math.random() * nameOptions.length)];
-      const description = descriptionOptions[Math.floor(Math.random() * descriptionOptions.length)];
+      // Randomly select a description from the corresponding list
+      const descriptionOptions = trendDescriptions[selectedType];
+      const selectedDescription = descriptionOptions[Math.floor(Math.random() * descriptionOptions.length)];
       
-      // Select 1-3 platforms that are affected
-      const numAffectedPlatforms = Math.floor(Math.random() * 3) + 1;
+      // Randomly select 1-3 platforms to be affected
+      const platformCount = Math.floor(Math.random() * 3) + 1;
       const shuffledPlatforms = [...allPlatforms].sort(() => 0.5 - Math.random());
-      const affectedPlatforms = shuffledPlatforms.slice(0, numAffectedPlatforms);
+      const selectedPlatforms = shuffledPlatforms.slice(0, platformCount);
       
-      // Determine impact factor (1-10) with higher values for hot and rising trends
-      let impactFactor = 0;
-      if (trendType === 'hot') {
-        impactFactor = Math.floor(Math.random() * 3) + 7; // 7-10
-      } else if (trendType === 'rising') {
-        impactFactor = Math.floor(Math.random() * 3) + 5; // 5-8
-      } else if (trendType === 'falling') {
-        impactFactor = Math.floor(Math.random() * 4) + 4; // 4-8
-      } else {
-        impactFactor = Math.floor(Math.random() * 4) + 3; // 3-7
-      }
+      // Generate a random impact factor (1-10)
+      const impactFactor = Math.floor(Math.random() * 10) + 1;
       
-      // Determine duration (in weeks)
-      const duration = Math.floor(Math.random() * 6) + 2; // 2-8 weeks
+      // Generate a random duration (2-8 weeks)
+      const duration = Math.floor(Math.random() * 7) + 2;
       
-      // Create the trend object
+      // Create the new trend
       const newTrend: MarketTrend = {
-        id: uuidv4(),
-        name,
-        description,
-        type: trendType,
-        affectedPlatforms,
-        impactFactor,
-        duration,
+        id: trendId,
+        name: selectedName,
+        description: selectedDescription,
+        type: selectedType,
+        affectedPlatforms: selectedPlatforms,
+        impactFactor: impactFactor,
+        duration: duration,
         startWeek: currentState.currentWeek
       };
       
-      // Add to active trends
+      // Add the new trend to active trends
       set(state => ({
-        activeMarketTrends: [...state.activeMarketTrends, newTrend]
+        ...state,
+        activeMarketTrends: [...(state.activeMarketTrends || []), newTrend]
       }));
       
-      return newTrend;
+      return trendId;
     },
     
     processMarketTrends: () => {
@@ -2376,16 +2363,43 @@ export const useRapperGame = create<RapperGameStore>()(
     updateTrends: () => {
       const currentState = get();
       
-      if (!currentState.socialMediaStats?.twitter?.trends) return;
+      // Update social media trends
+      if (currentState.socialMediaStats?.twitter?.trends) {
+        // Create new trending topics (some stay, some fade out, some new ones appear)
+        const existingTrends = [...currentState.socialMediaStats.twitter.trends];
+        
+        // Randomly select trends to keep (60% chance to keep a trend)
+        const keepTrends = existingTrends.filter(() => Math.random() > 0.4);
+        
+        // Create some new trending topics
+        const newTrendsCount = Math.floor(Math.random() * 3) + 1; // 1-3 new trends
+      }
       
-      // Create new trending topics (some stay, some fade out, some new ones appear)
-      const existingTrends = [...currentState.socialMediaStats.twitter.trends];
+      // Now update market trends
+      const { activeMarketTrends = [], pastMarketTrends = [], currentWeek = 1 } = currentState;
       
-      // Randomly select trends to keep (60% chance to keep a trend)
-      const keepTrends = existingTrends.filter(() => Math.random() > 0.4);
+      // Check which trends have expired and move them to past trends
+      const updatedActiveMarketTrends = [...activeMarketTrends];
+      const updatedPastMarketTrends = [...pastMarketTrends];
       
-      // Create some new trending topics
-      const newTrendsCount = Math.floor(Math.random() * 3) + 1; // 1-3 new trends
+      const expiredTrends = updatedActiveMarketTrends.filter(
+        trend => trend.startWeek + trend.duration <= currentWeek
+      );
+      
+      // Remove expired trends from active list
+      const newActiveMarketTrends = updatedActiveMarketTrends.filter(
+        trend => trend.startWeek + trend.duration > currentWeek
+      );
+      
+      // Add expired trends to past trends
+      updatedPastMarketTrends.push(...expiredTrends);
+      
+      // Update the state with new trend lists
+      set(state => ({
+        ...state,
+        activeMarketTrends: newActiveMarketTrends,
+        pastMarketTrends: updatedPastMarketTrends
+      }));
       
       const musicTrendOptions = [
         { name: '#NewMusic', category: 'Music', description: 'Music fans are talking about new releases this week' },
