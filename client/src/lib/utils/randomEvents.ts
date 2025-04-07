@@ -189,6 +189,10 @@ export const generateRandomEvents = (): RandomEvent[] => {
       id: "event_5",
       title: "Feature Opportunity",
       description: `A major artist wants to feature you on their upcoming track!`,
+      // Make this event only appear for artists with at least some reputation
+      requiresStats: {
+        reputation: 30 // Only artists with at least 30 reputation get feature opportunities
+      },
       options: [
         {
           text: "Accept the feature opportunity",
@@ -366,6 +370,11 @@ export const generateRandomEvents = (): RandomEvent[] => {
       id: "event_9",
       title: "Fashion Brand Partnership",
       description: "A popular clothing brand wants you to be the face of their new collection!",
+      // Add requirement for higher reputation and career level for sponsorships
+      requiresStats: {
+        reputation: 50,
+        careerLevel: 3 // Only established artists with career level 3+ get brand deals
+      },
       options: [
         {
           text: "Accept the endorsement deal",
@@ -475,6 +484,11 @@ export const generateRandomEvents = (): RandomEvent[] => {
       id: "event_11",
       title: "Music Festival Invitation",
       description: "You've been invited to perform at a major music festival!",
+      // Require some career progress for festival invitations
+      requiresStats: {
+        reputation: 40,
+        careerLevel: 2 // At least level 2 for festival invitations
+      },
       options: [
         {
           text: "Accept and prepare an amazing show",
@@ -532,6 +546,11 @@ export const generateRandomEvents = (): RandomEvent[] => {
       id: "event_12",
       title: "Streaming Platform Exclusive Deal",
       description: "A major streaming platform wants to make your next release exclusive for two weeks.",
+      // Require higher reputation for platform deals
+      requiresStats: {
+        reputation: 55,
+        careerLevel: 3 // Only established artists get exclusive deals
+      },
       options: [
         {
           text: "Accept the exclusive deal",

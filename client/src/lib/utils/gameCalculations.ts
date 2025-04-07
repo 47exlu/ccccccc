@@ -368,24 +368,24 @@ export const calculateAIFeatureRequestChance = (
 
 // Calculate revenue from streams
 export const calculateStreamingRevenue = (totalStreams: number, platformName?: string): number => {
-  // Different platforms have different payout rates per stream
+  // Different platforms have different payout rates per stream (increased by 3x for better game progression)
   const platformRates: Record<string, number> = {
-    'Spotify': 0.004,          // $0.004 per stream
-    'Apple Music': 0.0075,     // $0.0075 per stream
-    'iTunes': 0.006,           // $0.006 per stream
-    'SoundCloud': 0.003,       // $0.003 per stream
-    'YouTube Music': 0.005,    // $0.005 per stream
-    'YouTube': 0.001,          // $0.001 per stream (lowest for regular YT)
-    'YouTube Vevo': 0.0055,    // $0.0055 per stream (higher for official vevo)
-    'Amazon Music': 0.004,     // $0.004 per stream
-    'Tidal': 0.0084,           // $0.0084 per stream (highest)
-    'Deezer': 0.0035,          // $0.0035 per stream
+    'Spotify': 0.012,          // $0.012 per stream (3x real-world rate)
+    'Apple Music': 0.0225,     // $0.0225 per stream (3x real-world rate)
+    'iTunes': 0.018,           // $0.018 per stream (3x real-world rate)
+    'SoundCloud': 0.009,       // $0.009 per stream (3x real-world rate)
+    'YouTube Music': 0.015,    // $0.015 per stream (3x real-world rate)
+    'YouTube': 0.003,          // $0.003 per stream (3x real-world rate)
+    'YouTube Vevo': 0.0165,    // $0.0165 per stream (3x real-world rate)
+    'Amazon Music': 0.012,     // $0.012 per stream (3x real-world rate)
+    'Tidal': 0.0252,           // $0.0252 per stream (3x real-world rate)
+    'Deezer': 0.0105,          // $0.0105 per stream (3x real-world rate)
   };
   
   // Use platform-specific rate if provided, otherwise use average rate
   const ratePerStream = platformName && platformRates[platformName] 
     ? platformRates[platformName] 
-    : 0.004; // Default average if platform not specified
+    : 0.012; // Default average if platform not specified (3x previous default)
     
   return Math.floor(totalStreams * ratePerStream);
 };

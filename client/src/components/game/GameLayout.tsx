@@ -124,10 +124,10 @@ export function GameLayout({ children }: GameLayoutProps) {
         )}
       </AnimatePresence>
       
-      {/* Controls panel - moved to a more subtle location */}
+      {/* Controls panel - moved to top left for better accessibility */}
       <motion.div 
-        className="fixed bottom-4 right-4 z-50 flex items-center gap-2 bg-gray-900/70 backdrop-blur-md rounded-full p-1.5 border border-gray-800 shadow-lg"
-        initial={{ opacity: 0, y: 20 }}
+        className="fixed top-4 right-4 z-50 flex items-center gap-2 bg-gray-900/70 backdrop-blur-md rounded-full p-1.5 border border-gray-800 shadow-lg"
+        initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.5 }}
       >

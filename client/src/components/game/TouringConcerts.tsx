@@ -553,8 +553,7 @@ export function TouringConcerts() {
                     onClick={handleBookVenue}
                     disabled={
                       stats.reputation < (venues?.find(v => v.id === selectedVenue)?.reputationRequired || 0) ||
-                      wealth < (venues?.find(v => v.id === selectedVenue)?.cost || 0) ||
-                      !pastShows
+                      wealth < (venues?.find(v => v.id === selectedVenue)?.cost || 0)
                     }
                   >
                     Book Venue ({formatMoney(venues?.find(v => v.id === selectedVenue)?.cost || 0)})
