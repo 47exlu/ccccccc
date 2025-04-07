@@ -23,21 +23,26 @@ export function PlayerWikipedia() {
     gameState?.songs?.map(s => s.title) || 'No songs');
   console.log('PlayerWikipedia - songs length:', gameState?.songs?.length || 0);
 
-  // Calculate total career stats
-  // Log songs array to debug
-  console.log('PlayerWikipedia - Songs data:', JSON.stringify(songs?.map(s => ({
-    title: s.title,
-    streams: s.streams,
-    released: s.released
-  })) || []));
+  // Calculate total career stats  
+  // More defensive checking of songs array
+  const safeSongs = Array.isArray(songs) ? songs : [];
   
-  const totalSongs = songs?.filter(song => song.released)?.length || 0;
-  const totalAlbums = albums?.filter(album => album.released)?.length || 0;
-  const totalStreams = songs?.reduce((total, song) => {
-    // Check if song has streams
-    console.log(`Song "${song?.title}": ${song?.streams || 0} streams, released: ${song?.released}`);
-    return total + (song?.streams || 0);
-  }, 0) || 0;
+  // Log songs array to debug
+  console.log('PlayerWikipedia - Songs data:', JSON.stringify(safeSongs.map(s => ({
+    title: s.title || 'Unnamed song',
+    streams: typeof s.streams === 'number' ? s.streams : 0,
+    released: !!s.released
+  }))));
+  
+  const totalSongs = safeSongs.filter(song => song.released)?.length || 0;
+  const totalAlbums = Array.isArray(albums) ? albums.filter(album => album.released)?.length || 0 : 0;
+  
+  // More defensive stream calculation
+  const totalStreams = safeSongs.reduce((total, song) => {
+    const streamCount = typeof song.streams === 'number' ? song.streams : 0;
+    console.log(`Song "${song?.title || 'Unnamed'}": ${streamCount} streams, released: ${!!song.released}`);
+    return total + streamCount;
+  }, 0);
   
   console.log('PlayerWikipedia - Total streams calculated:', totalStreams);
   
@@ -55,21 +60,35 @@ export function PlayerWikipedia() {
   // Calculate monthly listeners
   const calculateMonthlyListeners = () => {
     let total = 0;
-    streamingPlatforms?.forEach(platform => {
-      total += platform.monthlyListeners || 0;
-    });
+    // Check if streamingPlatforms exists and is an array
+    if (streamingPlatforms && Array.isArray(streamingPlatforms)) {
+      streamingPlatforms.forEach(platform => {
+        // Check if monthlyListeners exists and is a number
+        const listeners = typeof platform.monthlyListeners === 'number' ? platform.monthlyListeners : 0;
+        total += listeners;
+      });
+    }
     return total;
   };
 
   const monthlyListeners = calculateMonthlyListeners();
 
-  // Find most successful song and album
-  const mostSuccessfulSong = songs?.length 
-    ? [...songs].sort((a, b) => (b.streams || 0) - (a.streams || 0))[0] 
+  // Find most successful song and album with defensive checking
+  const mostSuccessfulSong = Array.isArray(safeSongs) && safeSongs.length > 0 
+    ? [...safeSongs].sort((a, b) => {
+        const aStreams = typeof a.streams === 'number' ? a.streams : 0;
+        const bStreams = typeof b.streams === 'number' ? b.streams : 0;
+        return bStreams - aStreams;
+      })[0] 
     : null;
     
-  const mostSuccessfulAlbum = albums?.length 
-    ? [...albums].sort((a, b) => (b.streams || 0) - (a.streams || 0))[0] 
+  const safeAlbums = Array.isArray(albums) ? albums : [];
+  const mostSuccessfulAlbum = safeAlbums.length > 0
+    ? [...safeAlbums].sort((a, b) => {
+        const aStreams = typeof a.streams === 'number' ? a.streams : 0;
+        const bStreams = typeof b.streams === 'number' ? b.streams : 0;
+        return bStreams - aStreams;
+      })[0] 
     : null;
 
   return (
@@ -272,19 +291,29 @@ export function PlayerWikipedia() {
               </h2>
               
               <div className="space-y-3">
-                {songs && songs.filter(song => song.released).sort((a, b) => (b.releaseDate || 0) - (a.releaseDate || 0)).slice(0, 3).map(song => (
-                  <div key={song.id} className="flex items-center p-2 bg-gray-700 bg-opacity-30 rounded">
-                    <div className="w-10 h-10 rounded bg-gradient-to-br from-purple-700 to-pink-700 flex items-center justify-center mr-3 flex-shrink-0">
-                      <Music className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <div className="font-medium">{song.title}</div>
-                      <div className="text-xs text-gray-400">Released on Week {song.releaseDate} • {formatNumber(song.streams || 0)} streams</div>
-                    </div>
-                  </div>
-                ))}
-                
-                {(!songs || songs.filter(song => song.released).length === 0) && (
+                {safeSongs && safeSongs.length > 0 ? (
+                  safeSongs
+                    .filter(song => song.released)
+                    .sort((a, b) => {
+                      const aDate = a.releaseDate || 0;
+                      const bDate = b.releaseDate || 0;
+                      return bDate - aDate;
+                    })
+                    .slice(0, 3)
+                    .map(song => (
+                      <div key={song.id} className="flex items-center p-2 bg-gray-700 bg-opacity-30 rounded">
+                        <div className="w-10 h-10 rounded bg-gradient-to-br from-purple-700 to-pink-700 flex items-center justify-center mr-3 flex-shrink-0">
+                          <Music className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <div className="font-medium">{song.title}</div>
+                          <div className="text-xs text-gray-400">
+                            Released on Week {song.releaseDate || '?'} • {formatNumber(typeof song.streams === 'number' ? song.streams : 0)} streams
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                ) : (
                   <div className="text-gray-500 italic text-center py-4">
                     No recent activity to display
                   </div>
@@ -334,7 +363,7 @@ export function PlayerWikipedia() {
             <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
               <h2 className="text-lg font-bold mb-3">Singles & Songs ({totalSongs})</h2>
               
-              {songs && songs.length > 0 ? (
+              {safeSongs && safeSongs.length > 0 ? (
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead className="text-left text-xs text-gray-400 border-b border-gray-700">
@@ -347,24 +376,29 @@ export function PlayerWikipedia() {
                       </tr>
                     </thead>
                     <tbody>
-                      {songs.filter(song => song.released)
-                        .sort((a, b) => (b.streams || 0) - (a.streams || 0))
+                      {safeSongs
+                        .filter(song => song.released)
+                        .sort((a, b) => {
+                          const aStreams = typeof a.streams === 'number' ? a.streams : 0;
+                          const bStreams = typeof b.streams === 'number' ? b.streams : 0;
+                          return bStreams - aStreams;
+                        })
                         .map((song, index) => (
                         <tr key={song.id} className="border-b border-gray-700 hover:bg-gray-700 hover:bg-opacity-30">
                           <td className="py-3 px-2 text-sm">{index + 1}</td>
                           <td className="py-3 px-2">
                             <div className="font-medium">{song.title}</div>
-                            {song.featuring && song.featuring.length > 0 && (
+                            {Array.isArray(song.featuring) && song.featuring.length > 0 && (
                               <div className="text-xs text-gray-400">feat. {song.featuring.join(', ')}</div>
                             )}
                           </td>
-                          <td className="py-3 px-2 text-sm">Week {song.releaseDate}</td>
+                          <td className="py-3 px-2 text-sm">Week {song.releaseDate || '?'}</td>
                           <td className="py-3 px-2">
                             <span className={`px-2 py-0.5 rounded text-xs ${getTierColor(song.tier)}`}>
-                              Tier {song.tier}
+                              Tier {song.tier || 1}
                             </span>
                           </td>
-                          <td className="py-3 px-2 text-sm">{formatNumber(song.streams || 0)}</td>
+                          <td className="py-3 px-2 text-sm">{formatNumber(typeof song.streams === 'number' ? song.streams : 0)}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -444,14 +478,20 @@ export function PlayerWikipedia() {
             <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
               <h2 className="text-lg font-bold mb-3">Top Songs by Streaming</h2>
               
-              {songs && songs.filter(song => song.released).length > 0 ? (
+              {safeSongs && safeSongs.filter(song => song.released).length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {songs.filter(song => song.released)
-                    .sort((a, b) => (b.streams || 0) - (a.streams || 0))
+                  {safeSongs
+                    .filter(song => song.released)
+                    .sort((a, b) => {
+                      const aStreams = typeof a.streams === 'number' ? a.streams : 0;
+                      const bStreams = typeof b.streams === 'number' ? b.streams : 0;
+                      return bStreams - aStreams;
+                    })
                     .slice(0, 9)
                     .map((song, index) => {
+                      const songStreams = typeof song.streams === 'number' ? song.streams : 0;
                       const streamPercent = totalStreams > 0 
-                        ? ((song.streams || 0) / totalStreams) * 100
+                        ? (songStreams / totalStreams) * 100
                         : 0;
                         
                       return (
@@ -463,7 +503,7 @@ export function PlayerWikipedia() {
                             <div className="truncate">
                               <div className="font-medium truncate">{song.title}</div>
                               <div className="text-xs text-gray-400 truncate">
-                                {formatNumber(song.streams || 0)} streams
+                                {formatNumber(songStreams)} streams
                               </div>
                             </div>
                           </div>
@@ -788,21 +828,26 @@ function calculateStreamingProjections() {
   
   // Next million milestone
   const nextMillion = Math.ceil(totalStreams / 1000000) * 1000000;
-  if (nextMillion > totalStreams) {
+  if (nextMillion > totalStreams && weeklyGrowth > 0) {
     const weeksToMillion = Math.ceil((nextMillion - totalStreams) / weeklyGrowth);
     projections.push(`${formatNumber(nextMillion)} total streams in ~${weeksToMillion} weeks`);
   }
   
   // 10x current streams
   const tenX = totalStreams * 10;
-  const weeksToTenX = Math.ceil((tenX - totalStreams) / weeklyGrowth);
-  projections.push(`${formatNumber(tenX)} total streams (10x current) in ~${weeksToTenX} weeks`);
+  // Prevent division by zero
+  if (weeklyGrowth > 0) {
+    const weeksToTenX = Math.ceil((tenX - totalStreams) / weeklyGrowth);
+    projections.push(`${formatNumber(tenX)} total streams (10x current) in ~${weeksToTenX} weeks`);
+  } else {
+    projections.push(`${formatNumber(tenX)} total streams (10x current) - need more activity to estimate`);
+  }
   
   // Monthly listeners milestone
   const currentMonthly = gameState.streamingPlatforms?.reduce((sum, p) => sum + (p.monthlyListeners || 0), 0) || 0;
   const nextMonthlyMilestone = Math.ceil(currentMonthly / 100000) * 100000;
   
-  if (nextMonthlyMilestone > currentMonthly) {
+  if (nextMonthlyMilestone > currentMonthly && weeklyGrowth > 0) {
     const weeksToMonthlyMilestone = Math.ceil((nextMonthlyMilestone - currentMonthly) / (weeklyGrowth * 0.2));
     projections.push(`${formatNumber(nextMonthlyMilestone)} monthly listeners in ~${weeksToMonthlyMilestone} weeks`);
   }
@@ -813,8 +858,12 @@ function calculateStreamingProjections() {
 function estimateWeeklyStreamGrowth() {
   // Simplified version that returns an estimate of weekly stream growth
   const gameState = useRapperGame.getState();
-  const totalStreams = gameState.songs?.reduce((total, song) => total + (song.streams || 0), 0) || 0;
-  const songsCount = gameState.songs?.filter(song => song.released)?.length || 0;
+  
+  // More robust null/undefined checking
+  if (!gameState || !gameState.songs) return 1000;
+  
+  const totalStreams = gameState.songs.reduce((total, song) => total + (song.streams || 0), 0) || 0;
+  const songsCount = gameState.songs.filter(song => song.released)?.length || 0;
   
   if (songsCount === 0 || totalStreams === 0) return 1000; // Default value for new artists
   
