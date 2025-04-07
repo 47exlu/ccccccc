@@ -746,50 +746,58 @@ export const useRapperGame = create<RapperGameStore>()(
       
       // FOOL-PROOF FIX: Force all platforms to have different stream counts in the UI
       // First, ensure each platformGrowth value is unique by making small adjustments
-      const allPlatformNames = currentState.streamingPlatforms.map(p => p.name);
+      const allPlatformNames = currentState.streamingPlatforms?.map(p => p.name) || [];
       const platformGrowthSet = new Set();
       
-      allPlatformNames.forEach(platformName => {
-        let growth = platformStreamMap[platformName] || 0;
-        
-        // Make sure each growth value is unique
-        while (platformGrowthSet.has(growth) && growth > 0) {
-          growth += 1 + Math.floor(Math.random() * 5);
-        }
-        
-        // Add this unique growth to our Set and update the map
-        platformGrowthSet.add(growth);
-        platformStreamMap[platformName] = growth;
-      });
+      // Initialize finalStreamsMap outside the if block to ensure it's always defined
+      let finalStreamsMap: Record<string, number> = {};
       
-      // After ensuring unique growth, ensure unique total streams
-      const finalStreamsMap: Record<string, number> = {};
-      
-      // Calculate initial values
-      allPlatformNames.forEach(platformName => {
-        const platform = currentState.streamingPlatforms.find(p => p.name === platformName);
-        if (platform) {
-          finalStreamsMap[platformName] = platform.totalStreams + (platformStreamMap[platformName] || 0);
-        }
-      });
-      
-      // Ensure no duplicate values
-      const finalStreamsSet = new Set();
-      allPlatformNames.forEach(platformName => {
-        let totalStreams = finalStreamsMap[platformName];
+      if (allPlatformNames && allPlatformNames.length > 0) {
+        allPlatformNames.forEach(platformName => {
+          let growth = platformStreamMap[platformName] || 0;
+          
+          // Make sure each growth value is unique
+          while (platformGrowthSet.has(growth) && growth > 0) {
+            growth += 1 + Math.floor(Math.random() * 5);
+          }
+          
+          // Add this unique growth to our Set and update the map
+          platformGrowthSet.add(growth);
+          platformStreamMap[platformName] = growth;
+        });
         
-        while (finalStreamsSet.has(totalStreams)) {
-          totalStreams += 1 + Math.floor(Math.random() * 5);
-        }
+        // Calculate initial values
+        allPlatformNames.forEach(platformName => {
+          const platform = currentState.streamingPlatforms?.find(p => p.name === platformName);
+          if (platform) {
+            finalStreamsMap[platformName] = platform.totalStreams + (platformStreamMap[platformName] || 0);
+          }
+        });
         
-        finalStreamsSet.add(totalStreams);
-        finalStreamsMap[platformName] = totalStreams;
-      });
+        // Ensure no duplicate values
+        const finalStreamsSet = new Set();
+        allPlatformNames.forEach(platformName => {
+          let totalStreams = finalStreamsMap[platformName];
+          
+          if (totalStreams !== undefined) {
+            while (finalStreamsSet.has(totalStreams)) {
+              totalStreams += 1 + Math.floor(Math.random() * 5);
+            }
+            
+            finalStreamsSet.add(totalStreams);
+            finalStreamsMap[platformName] = totalStreams;
+          }
+        });
+      } else {
+        // If we don't have platform names, initialize with empty object
+        console.warn("No streaming platforms found when advancing week");
+      }
       
       // NOW update each platform with guaranteed unique values
       updatedState.streamingPlatforms = currentState.streamingPlatforms.map(platform => {
         // Get the forced unique streams allocated to this platform
-        const updatedStreams = finalStreamsMap[platform.name] || platform.totalStreams;
+        // Add null check to ensure finalStreamsMap is defined and has the platform
+        const updatedStreams = (finalStreamsMap && finalStreamsMap[platform.name]) || platform.totalStreams;
         
         // For new players, platforms start with small numbers, then accelerate
         // Calculate base monthly listeners from streams with better progression curve
