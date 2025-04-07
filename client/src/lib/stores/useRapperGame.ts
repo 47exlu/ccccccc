@@ -760,17 +760,18 @@ export const useRapperGame = create<RapperGameStore>()(
         // Process platform growth values
         if (allPlatformNames.length > 0) {
           allPlatformNames.forEach(platformName => {
-          let growth = platformStreamMap[platformName] || 0;
-          
-          // Make sure each growth value is unique
-          while (platformGrowthSet.has(growth) && growth > 0) {
-            growth += 1 + Math.floor(Math.random() * 5);
-          }
-          
-          // Add this unique growth to our Set and update the map
-          platformGrowthSet.add(growth);
-          platformStreamMap[platformName] = growth;
-        });
+            let growth = platformStreamMap[platformName] || 0;
+            
+            // Make sure each growth value is unique
+            while (platformGrowthSet.has(growth) && growth > 0) {
+              growth += 1 + Math.floor(Math.random() * 5);
+            }
+            
+            // Add this unique growth to our Set and update the map
+            platformGrowthSet.add(growth);
+            platformStreamMap[platformName] = growth;
+          });
+        }
         
         // Calculate initial values
         if (allPlatformNames.length > 0) {
@@ -1760,8 +1761,10 @@ export const useRapperGame = create<RapperGameStore>()(
       // Set the updated state
       set(updatedState);
       
-      // Update trends and reset energy
+      // Update trends
       get().updateTrends();
+      
+      // Reset energy
       useEnergyStore.getState().resetEnergy();
     },
     
