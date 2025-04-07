@@ -118,7 +118,6 @@ interface RapperGameActions {
   createBurnerAccount: (platform: string, handle: string, displayName?: string, bio?: string) => string;
   postFromBurnerAccount: (platform: string, burnerAccountHandle: string, content: string, images?: string[]) => void;
   deleteBurnerAccount: (platform: string, burnerAccountHandle: string) => void;
-  updateTrends: () => void;
   generateMusicChartPost: (accountId: string, content: string, image?: string) => void;
   
   // Collaboration
@@ -186,7 +185,9 @@ interface RapperGameActions {
   
   // Market trends system
   generateMarketTrend: () => string;
-  updateTrends: () => void;
+  processMarketTrends: () => void;
+  updateTwitterTrends: () => void;
+  getTrendEffect: (platformName: string) => number;
 }
 
 // Combine state and actions
@@ -1989,8 +1990,11 @@ export const useRapperGame = create<RapperGameStore>()(
       // Set the updated state
       set(updatedState);
       
-      // Update trends
-      get().updateTrends();
+      // Process market trends
+      get().processMarketTrends();
+      
+      // Update Twitter trends
+      get().updateTwitterTrends();
       
       // Reset energy
       useEnergyStore.getState().resetEnergy();
@@ -2359,9 +2363,13 @@ export const useRapperGame = create<RapperGameStore>()(
       set({ socialMediaStats: updatedStats });
     },
     
-    // Update Twitter trends and music chart posts
-    updateTrends: () => {
+    // Update Twitter trends and music chart posts (separated from market trends)
+    updateTwitterTrends: () => {
       const currentState = get();
+      
+      // Local variables for trend management
+      let keepTrendsLocal: any[] = [];
+      let newTrendsCountLocal = 0;
       
       // Update social media trends
       if (currentState.socialMediaStats?.twitter?.trends) {
@@ -2369,37 +2377,11 @@ export const useRapperGame = create<RapperGameStore>()(
         const existingTrends = [...currentState.socialMediaStats.twitter.trends];
         
         // Randomly select trends to keep (60% chance to keep a trend)
-        const keepTrends = existingTrends.filter(() => Math.random() > 0.4);
+        keepTrendsLocal = existingTrends.filter(() => Math.random() > 0.4);
         
         // Create some new trending topics
-        const newTrendsCount = Math.floor(Math.random() * 3) + 1; // 1-3 new trends
+        newTrendsCountLocal = Math.floor(Math.random() * 3) + 1; // 1-3 new trends
       }
-      
-      // Now update market trends
-      const { activeMarketTrends = [], pastMarketTrends = [], currentWeek = 1 } = currentState;
-      
-      // Check which trends have expired and move them to past trends
-      const updatedActiveMarketTrends = [...activeMarketTrends];
-      const updatedPastMarketTrends = [...pastMarketTrends];
-      
-      const expiredTrends = updatedActiveMarketTrends.filter(
-        trend => trend.startWeek + trend.duration <= currentWeek
-      );
-      
-      // Remove expired trends from active list
-      const newActiveMarketTrends = updatedActiveMarketTrends.filter(
-        trend => trend.startWeek + trend.duration > currentWeek
-      );
-      
-      // Add expired trends to past trends
-      updatedPastMarketTrends.push(...expiredTrends);
-      
-      // Update the state with new trend lists
-      set(state => ({
-        ...state,
-        activeMarketTrends: newActiveMarketTrends,
-        pastMarketTrends: updatedPastMarketTrends
-      }));
       
       const musicTrendOptions = [
         { name: '#NewMusic', category: 'Music', description: 'Music fans are talking about new releases this week' },
@@ -2432,7 +2414,7 @@ export const useRapperGame = create<RapperGameStore>()(
       
       // Create new trends based on random selections from these options
       const newTrends = [];
-      for (let i = 0; i < newTrendsCount; i++) {
+      for (let i = 0; i < newTrendsCountLocal; i++) {
         const randomCategory = Math.random();
         let trendPool;
         
@@ -2461,7 +2443,7 @@ export const useRapperGame = create<RapperGameStore>()(
       }
       
       // Combine existing and new trends, making sure no duplicates
-      const allTrends = [...keepTrends];
+      const allTrends = [...keepTrendsLocal];
       
       // Add new trends avoiding duplicates
       newTrends.forEach(newTrend => {
