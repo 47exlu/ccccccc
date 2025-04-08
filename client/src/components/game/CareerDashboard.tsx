@@ -145,8 +145,15 @@ export function CareerDashboard() {
   const totalMonthlyListeners = streamingPlatforms?.reduce((sum, platform) => 
     sum + (platform && typeof platform.listeners === 'number' ? platform.listeners : 0), 0) || 0;
   
-  const totalStreams = streamingPlatforms?.reduce((sum, platform) => 
+  // Calculate total streams from both individual songs AND from platform totals (whichever is higher)
+  const songsTotalStreams = songs?.reduce((sum, song) => 
+    sum + (song && typeof song.streams === 'number' ? song.streams : 0), 0) || 0;
+    
+  const platformTotalStreams = streamingPlatforms?.reduce((sum, platform) => 
     sum + (platform && typeof platform.totalStreams === 'number' ? platform.totalStreams : 0), 0) || 0;
+    
+  // Use the higher of the two totals to ensure accurate display
+  const totalStreams = Math.max(songsTotalStreams, platformTotalStreams);
   
   const totalRevenue = streamingPlatforms?.reduce((sum, platform) => 
     sum + (platform && typeof platform.revenue === 'number' ? platform.revenue : 0), 0) || 0;

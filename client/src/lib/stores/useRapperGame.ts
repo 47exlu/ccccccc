@@ -154,6 +154,7 @@ interface RapperGameActions {
   
   // Tour and concert management
   createTour: (name: string, venues: string[], startWeek: number) => string;
+  confirmTour: (tourId: string) => void; // Add the confirmTour function
   cancelTour: (tourId: string) => void;
   scheduleConcert: (venueId: string, week: number, ticketPrice: number, setlist: string[]) => string;
   cancelConcert: (concertId: string) => void;
@@ -3760,6 +3761,12 @@ export const useRapperGame = create<RapperGameStore>()(
       // Calculate end week based on venues (1 week per venue)
       const endWeek = startWeek + venues.length;
       
+      // Validate start week isn't in the past
+      if (startWeek < currentState.currentWeek) {
+        alert("You can't schedule a tour in the past!");
+        return "";
+      }
+      
       const newTour: Tour = {
         id,
         name,
@@ -3796,6 +3803,51 @@ export const useRapperGame = create<RapperGameStore>()(
       });
       
       return id;
+    },
+    
+    confirmTour: (tourId) => {
+      const currentState = get();
+      
+      // Find the tour
+      const tour = currentState.tours?.find(t => t.id === tourId);
+      if (!tour) {
+        alert("Tour not found!");
+        return;
+      }
+      
+      // Can only confirm if it's still in planning status
+      if (tour.status !== "planning") {
+        alert("This tour is already confirmed or in progress!");
+        return;
+      }
+      
+      // Verify player meets requirements for all venues
+      let playerMeetsRequirements = true;
+      let requiredReputation = 0;
+      
+      for (const venueId of tour.venues) {
+        const venue = currentState.venues?.find(v => v.id === venueId);
+        if (venue && venue.reputationRequired > currentState.stats.reputation) {
+          playerMeetsRequirements = false;
+          requiredReputation = Math.max(requiredReputation, venue.reputationRequired);
+        }
+      }
+      
+      if (!playerMeetsRequirements) {
+        alert(`You need at least ${requiredReputation} reputation to confirm this tour. Build your reputation and try again later.`);
+        return;
+      }
+      
+      // Update tour status to "active"
+      set({
+        tours: currentState.tours?.map(t => 
+          t.id === tourId 
+            ? { ...t, status: "active" } 
+            : t
+        )
+      });
+      
+      alert(`Tour "${tour.name}" has been confirmed and is now active! It will begin in week ${tour.startWeek}.`);
     },
     
     cancelTour: (tourId) => {

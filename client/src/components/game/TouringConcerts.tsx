@@ -101,12 +101,23 @@ export function TouringConcerts() {
     }
     
     try {
-      // Call the createTour function from the game store
-      useRapperGame().createTour({
-        name: tourName,
-        startWeek,
-        numberOfVenues: numberOfShows
-      });
+      // Get an array of venue IDs for the tour
+      // For simplicity, we'll select random venues for now
+      const availableVenues = venues || [];
+      const selectedVenues = [];
+      
+      // Select random venues up to the number of shows requested
+      for (let i = 0; i < numberOfShows && availableVenues.length > 0; i++) {
+        const randomIndex = Math.floor(Math.random() * availableVenues.length);
+        selectedVenues.push(availableVenues[randomIndex].id);
+      }
+      
+      // Call the createTour function from the game store with the correct parameters
+      useRapperGame().createTour(
+        tourName,
+        selectedVenues,
+        startWeek
+      );
       
       toast.success("Tour planned successfully! Check Your Tours section for details.");
       
@@ -420,12 +431,9 @@ export function TouringConcerts() {
                               size="sm" 
                               className="text-xs bg-teal-700 hover:bg-teal-600"
                               onClick={() => {
-                                if (typeof useRapperGame().confirmTour === 'function') {
-                                  useRapperGame().confirmTour(tour.id);
-                                  toast.success("Tour confirmed! It will start in week " + tour.startWeek);
-                                } else {
-                                  toast.error("Tour confirmation feature coming soon");
-                                }
+                                // Use the confirmTour function we've implemented
+                                useRapperGame().confirmTour(tour.id);
+                                toast.success("Tour confirmed! It will start in week " + tour.startWeek);
                               }}
                             >
                               <Check className="h-3 w-3 mr-1" />
